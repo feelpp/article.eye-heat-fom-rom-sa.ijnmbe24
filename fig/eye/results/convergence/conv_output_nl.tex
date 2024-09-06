@@ -1,0 +1,123 @@
+% This file was created with tikzplotlib v0.10.1.
+\begin{tikzpicture}
+
+\definecolor{darkgray176}{RGB}{176,176,176}
+\definecolor{darkorange25512714}{RGB}{255,127,14}
+\definecolor{lightgray204}{RGB}{204,204,204}
+\definecolor{steelblue31119180}{RGB}{31,119,180}
+
+\begin{axis}[
+    legend cell align={left},
+    legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=lightgray204},
+    log basis x={10},
+    tick align=outside,
+    tick pos=left,
+    unbounded coords=jump,
+    xmajorgrids, ymajorgrids, xminorgrids,
+    x grid style={darkgray176},
+    xlabel={Number of degrees of freedom $\N$},
+    % xmin=36614.2557933501, xmax=10163847.8211426,
+    xmode=log,
+    xtick style={color=black},
+    y grid style={darkgray176},
+    ylabel={$T_{\text{NL},O}^\fem$ [K]},
+    ymin=309.381830780537, ymax=309.390535547796,
+    ytick style={color=black},
+    yticklabel style={scaled ticks=false,
+                                /pgf/number format/fixed,
+                                /pgf/number format/precision=3},
+]
+\addplot [semithick, colorA, mark=*, mark size=2, mark options={solid}]
+table {%
+    % 47284 309.390139876557
+    % 68993 309.385422118574
+    120581 309.388748368823
+    207845 309.387459458495
+    995906 309.386518710653
+    7360346 309.383311103605
+};
+\addlegendentry{$\P_1$}
+\addplot [semithick, colorB!50!black, mark=*, mark size=4, mark options={solid}, forget plot]
+table {%
+    1580932 309.382354692412
+};
+\addplot [semithick, colorB, mark=*, mark size=2, mark options={solid}]
+table {%
+    326928 309.386607120489
+    472693 309.385179086414
+    882826 309.382478681363
+    1580932 309.382354692412
+    7870352 309.382226451776
+    58655836 nan
+};
+\addlegendentry{$\P_2$}
+% \draw (axis cs:47284,309.390139876557) node[
+%   scale=0.5,
+%   anchor=base west,
+%   text=black,
+%   rotate=0.0
+% ]{\texttt{M0}};
+\draw (axis cs:326928,309.386607120489) node[
+% scale=0.5,
+anchor=base west,
+text=black,
+rotate=0.0
+]{\texttt{M0}};
+% \draw (axis cs:68993,309.385422118574) node[
+%   scale=0.5,
+%   anchor=base west,
+%   text=black,
+%   rotate=0.0
+% ]{\texttt{M1}};
+\draw (axis cs:472693,309.385179086414) node[
+    % scale=0.5,
+    anchor=base west,
+    text=black,
+    rotate=0.0
+]{\texttt{M1}};
+\draw (axis cs:120581,309.388748368823) node[
+    % scale=0.5,
+    anchor=base west,
+    text=black,
+    rotate=0.0
+]{\texttt{M2}};
+\draw (axis cs:882826,309.382478681363) node[
+    % scale=0.5,
+    anchor=base west,
+    text=black,
+    rotate=0.0
+]{\texttt{M2}};
+\draw (axis cs:207845,309.387459458495) node[
+    % scale=0.5,
+    anchor=base west,
+    text=black,
+    rotate=0.0
+]{\texttt{M3}};
+\draw (axis cs:1580932,309.382354692412) node[
+    % scale=0.5,
+    anchor=base west,
+    text=black,
+    rotate=0.0
+]{\texttt{M3}};
+\draw (axis cs:995906,309.386518710653) node[
+    % scale=0.5,
+    anchor=base west,
+    text=black,
+    rotate=0.0
+]{\texttt{M4}};
+\draw (axis cs:7870352,309.382226451776) node[
+    % scale=0.5,
+    anchor=base west,
+    text=black,
+    rotate=0.0
+]{\texttt{M4}};
+\draw (axis cs:7360346,309.383311103605) node[
+    % scale=0.5,
+    anchor=base west,
+    text=black,
+    rotate=0.0
+]{\texttt{M5}};
+
+\end{axis}
+
+\end{tikzpicture}

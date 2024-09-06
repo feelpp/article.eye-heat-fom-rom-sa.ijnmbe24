@@ -1,0 +1,52 @@
+%!TeX root=../article.heat-fom-rom-sa.ijnmbe24.tex
+\subsubsection{Error estimates}
+\label{sec:rbm-error-estimates}
+
+
+
+\paragraph*{Error bound}
+
+Given the reduced basis approximation $\vct{T}^{\rbm, N}(\mu)$ of the high fidelity resolution solution $\vct{T}^\fem(\mu)$ for $\mu\in\Dmu$, we defined the \emph{field error}
+\begin{equation}
+    \vct{e}(\mu):= \vct{T}^\fem(\mu) - \vct{T}^{\rbm, N}(\mu)
+    \label{eq:error-field}
+\end{equation}
+
+We want to construct quantities $\Delta_N(\mu)$ and $\Delta_N^s(\mu)$ such that
+
+\begin{equation}
+    \norm{\vct{e}(\mu)}{V} \leqslant \Delta_N(\mu) \quad\text{and}\quad s(\mu)-s_N(\mu) \leqslant \Delta_N^s(\mu)
+\end{equation}
+
+Those quantities are named \emph{a posterior error bounds} \cite{10.1115/1.1448332,Rozza2007}.
+To quantify the \emph{sharpness} and \emph{rigor} properties of the error bound, we introduce the \emph{effectivity}:
+
+\begin{equation}
+    \eta_N(\mu):= \dfrac{\Delta_N(\mu)}{\norm{\vct{e}(\mu)}{V}}
+    \qquad
+    \eta_N^s(\mu):= \dfrac{\Delta_N^s(\mu)}{s(\mu)-s_N(\mu)}
+    \label{eq:effectivity}
+\end{equation}
+
+It has been proven in \cite{10.1115/1.1448332} that the error bound is \emph{rigorous}, namely that it is always greater than the error;
+and \emph{sharp}, namely that it is as close as possible to the actual error.
+
+These properties can be summarized as:
+\begin{equation}
+    1 \leqslant \eta_N(\mu) \leqslant \eta_{\ub}(\mu) \quad \forall \mu\in\Dmu
+\end{equation}
+where $\eta_{\ub}(\mu)$ is a the sharpness of the bound and is proven to be bounded \cite{10.1115/1.1448332} when $N$ increases.
+
+Finally, to construct the reduced space, we require the error bound to be \emph{efficient}, that is, its evaluation is independent of the size of the high fidelity space $\N$.
+This is critical when heuristic algorithms are used to construct the reduced space, such as the Greedy algorithm discussed in \Cref{sec:generation-reduced-basis}.
+
+Such an error bound can be constructed efficiently from the \emph{residual} $r$ of the problem (\ref{eq:variational-form}),
+a lower bound $\alpha_\lb(\mu)$ of the coercivity constant $\alpha(\mu)$ of $a_L(\cdot, \cdot; \mu)$, and the affine decomposition of $a_L$ and $f_L$:
+\begin{equation}
+    \alpha(\mu) = \inf_{v\in V}\frac{a(v, v; \mu)}{\norm{v}{V}^2},
+    \quad
+    r(v, \mu):= \ell(v; \mu) - a(u_N(\mu), v; \mu) \quad \forall v\in V
+    \quad\text{and}\quad
+    \Delta_N := \dfrac{\norm{r(\cdot, \mu)}{V'}}{\alpha_\lb(\mu)}
+\end{equation}
+For more details, refer to \cite{10.1115/1.1448332}.

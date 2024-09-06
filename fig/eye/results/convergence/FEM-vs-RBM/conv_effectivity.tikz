@@ -1,0 +1,82 @@
+% This file was created with tikzplotlib v0.10.1.
+\begin{tikzpicture}[scale=\scl]
+
+\definecolor{darkgray176}{RGB}{176,176,176}
+
+
+\begin{axis}[
+log basis y={10},
+tick align=outside,
+tick pos=left,
+x grid style={darkgray176},
+xlabel={$N$},
+xmin=1.6, xmax=10.4,
+xtick style={color=black},
+y grid style={darkgray176},
+ylabel={$\eta_N(\mu)$},
+ymode=log,
+ytick style={color=black},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=lightgray204}
+]
+\addplot [name path=Mmax, semithick, steelblue31119180, mark=none, mark size=3, mark options={solid}, forget plot]
+table {%
+2 1066.8884150652973
+4 275.5130537402244
+6 5175.283748411159
+8 227.51000861915077
+10 327.78324189653006
+};
+\addplot [name path=Mmin, semithick, steelblue31119180, mark=none, mark size=3, mark options={solid}, forget plot]
+table {%
+2 3.6036293609127763
+4 4.409972845317161
+6 2.769743503906592
+8 2.918187278624139
+10 5.222510930047634
+};
+\addplot [name path=Mmean, semithick, steelblue31119180, mark=*, mark size=3, mark options={solid}, dashed, forget plot]
+table {%
+2 38.83312731510946
+4 13.689024117830636
+6 87.9511500702313
+8 16.080183702477342
+10 15.459982089346433
+};
+\addplot [color=steelblue31119180, fill=steelblue31119180, opacity=0.2] fill between [of=Mmax and Mmin];
+\addlegendentry{$\eta_N^s(\mu)$}
+
+
+\addplot [name path=MFmax, semithick, forestgreen4416044, mark=none, mark size=3, mark options={solid}, forget plot]
+table {%
+2 1.5343413306443425
+4 1.4774853602885867
+6 1.4666194896909972
+8 1.4666340697067723
+10 1.5079660029253543
+};
+\addplot [name path=MFmin, semithick, forestgreen4416044, mark=none, mark size=3, mark options={solid}, forget plot]
+table {%
+2 1.3528010083235558
+4 1.3138862049682665
+6 1.2603680389132252
+8 1.3041573261775927
+10 1.2920726294213412
+};
+\addplot [name path=MFmean, semithick, forestgreen4416044, mark=*, mark size=3, mark options={solid}, dashed, forget plot]
+table {%
+2 1.439823770140758
+4 1.4082529053910926
+6 1.407758311277011
+8 1.3879751517983197
+10 1.4039526659084272
+};
+\addplot [color=forestgreen4416044, fill=forestgreen4416044, opacity=0.2] fill between [of=MFmax and MFmin];
+\addlegendentry{$\eta_N^\text{en}(\mu)$}
+
+\addplot[mark=none, red, samples=2] table {
+    1.6 1
+    10.4 1
+};
+\end{axis}
+
+\end{tikzpicture}

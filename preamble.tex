@@ -1,0 +1,145 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Load packages
+\usepackage{bbm}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{stmaryrd}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{multicol,multirow}
+\usepackage{paralist}
+\usepackage{textcomp}
+\usepackage[ruled]{algorithm2e}
+\usepackage[nopatch=footnote]{microtype}
+\usepackage{indentfirst}
+\usepackage{lmodern}
+\usepackage{stmaryrd}
+\usepackage{fixmath}
+\usepackage{csvsimple}
+\usepackage{numprint}
+\usepackage{soul}
+\usepackage{booktabs}
+\SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
+\usepackage{textgreek}
+\usepackage{siunitx}
+\usepackage{listofitems} % for \readlist to create arrays
+\usepackage{pgfplotstable} % <-- required in preamble
+\usepackage{import}
+\usepackage{currfile}
+
+\usepackage{csquotes}
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\addbibresource{biblio.bib}
+
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=newest}
+
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{positioning,shapes,shadows,arrows,angles,quotes,decorations.markings}
+\usetikzlibrary{mindmap, backgrounds}
+\usepgfplotslibrary{groupplots}
+\usetikzlibrary{pgfplots.colormaps}
+
+
+\tikzstyle{abstract}=[rectangle, draw=black, fill=blue!30, drop shadow,text centered, anchor=north, text=black]
+
+\definecolor{colorFeel3}{RGB}{28, 142, 186}
+\definecolor{colorFeel2}{RGB}{226, 19, 19}
+\definecolor{colorOoi}{RGB}{34, 120, 15}
+\definecolor{colorScott}{RGB}{244, 102, 27}
+\definecolor{colorLi}{RGB}{108, 2, 119}
+
+\definecolor{colorA}{RGB}{49,140,231}
+\definecolor{colorB}{RGB}{238,16,16}
+
+\definecolor{crimson2143940}{RGB}{214,39,40}
+\definecolor{darkgray176}{RGB}{176,176,176}
+\definecolor{darkorange25512714}{RGB}{255,127,14}
+\definecolor{forestgreen4416044}{RGB}{44,160,44}
+\definecolor{lightgray204}{RGB}{204,204,204}
+\definecolor{steelblue31119180}{RGB}{31,119,180}
+\definecolor{mediumpurple148103189}{RGB}{148,103,189}
+
+\newcommand{\logLogSlopeTriangle}[5]
+{
+    % #1. Relative offset in x direction.
+    % #2. Width in x direction, so xA-xB.
+    % #3. Relative offset in y direction.
+    % #4. Slope d(y)/d(log10(x)).
+    % #5. Plot options.
+
+    \pgfplotsextra
+    {
+        \pgfkeysgetvalue{/pgfplots/xmin}{\xmin}
+        \pgfkeysgetvalue{/pgfplots/xmax}{\xmax}
+        \pgfkeysgetvalue{/pgfplots/ymin}{\ymin}
+        \pgfkeysgetvalue{/pgfplots/ymax}{\ymax}
+
+        \pgfmathsetmacro{\xArel}{#1}
+        \pgfmathsetmacro{\yArel}{#3}
+        \pgfmathsetmacro{\xBrel}{#1-#2}
+        \pgfmathsetmacro{\yBrel}{\yArel}
+        \pgfmathsetmacro{\xCrel}{\xArel}
+
+        \pgfmathsetmacro{\lnxB}{\xmin*(1-(#1-#2))+\xmax*(#1-#2)} % in [xmin,xmax].
+        \pgfmathsetmacro{\lnxA}{\xmin*(1-#1)+\xmax*#1} % in [xmin,xmax].
+        \pgfmathsetmacro{\lnyA}{\ymin*(1-#3)+\ymax*#3} % in [ymin,ymax].
+        \pgfmathsetmacro{\lnyC}{\lnyA+#4*(\lnxA-\lnxB)}
+        \pgfmathsetmacro{\yCrel}{(\lnyC-\ymin)/(\ymax-\ymin)} % THE IMPROVED EXPRESSION WITHOUT 'DIMENSION TOO LARGE' ERROR.
+
+        \coordinate (A) at (rel axis cs:\xArel,\yArel);
+        \coordinate (B) at (rel axis cs:\xBrel,\yBrel);
+        \coordinate (C) at (rel axis cs:\xCrel,\yCrel);
+
+        \draw[#5]   (A) -- % node[pos=0.5,anchor=north] {1}
+                    (B) --
+                    (C) -- node[pos=0.5,anchor=west] {\pgfmathprintnumber[precision=2]{#4}}
+                    cycle;
+    }
+}
+
+
+%%% Math macros
+\newcommand{\vct}[1]{\mathbold{#1}}
+\newcommand{\mat}[1]{\mathbold{#1}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Em}{\mathcal{E}}
+\newcommand{\Dmu}{D^{\mu}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\n}{\vct{n}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\fem}{\mathrm{fem}}
+\newcommand{\fpp}{Feel++}
+\newcommand{\lb}{\mathrm{lb}}
+\newcommand{\rbm}{\mathrm{rbm}}
+\newcommand{\test}{\text{test}}
+\newcommand{\tol}{\text{tol}}
+\newcommand{\train}{\text{train}}
+\newcommand{\ub}{\mathrm{ub}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\x}{\vct{x}}
+
+\newcommand{\logN}{\log\text{-}\mathcal{N}}
+\newcommand{\unif}{\mathcal{U}}
+
+\newcommand{\norm}[2]{\left\Vert#1\right\Vert_{#2}}
+\newcommand{\scal}[3]{\left<#1,#2\right>_{#3}}
+\newcommand{\prm}[1]{\textcolor{blue}{#1}}
+
+%%% Theorems
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{coro}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{defi}[thm]{Definition}
+\newtheorem{ex}[thm]{Example}
+\newtheorem{nota}[thm]{Notation}
+\newtheorem{rem}[thm]{Remark}

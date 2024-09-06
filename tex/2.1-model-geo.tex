@@ -1,0 +1,40 @@
+%!TeX root=../article.heat-fom-rom-sa.ijnmbe24.tex
+\subsection{Geometry of the human eyeball}
+\label{sec:model-geo}
+
+
+In this section, we describe the realistic three-dimensional geometry that will be used in the sequel.
+The model we employ in the present work stems from \cite{https://doi.org/10.1002/cnm.3791},
+and was constructed using a CAD (Computer Aided Design) module from SALOME \cite{salome}.
+\Cref{fig:geo-eye} shows a cut-away view along a vertical plane of the reconstructed eye anatomy.
+
+
+\begin{figure}
+    \centering
+
+    \def\svgwidth{0.5\columnwidth}
+    \import{./fig/eye/vectorized-figures}{eye.pdf_tex}
+    \caption{Geometrical model of the human eye.}
+    \label{fig:geo-eye}
+\end{figure}
+
+
+The eye is composed of several regions, which have different physical properties.
+The original geometry contained five subdomains: the sclera, the choroid, the retina, the cornea and the lamina cribrosa.
+To have a better assessment of the thermal properties of each part, we further decompose the geometry as follows:
+(i) the cornea which allows heat transfer between the eye and the ambient air,
+(ii) the envelope of the eye composed of the sclera, the optic nerve, and the lamina cribrosa,
+(iii) the vascular beds namely the choroid and the retina, mostly composed of blood vessels,
+(iv) the anterior and posterior chambers, filled with aqueous humor,
+(v) the lens and
+(vi) the vitreous body filled with the vitreous humor, a transparent liquid allowing the light to reach the retina.
+In the present model, the optic nerve domain is assumed to be homogeneous, the contribution of the inner vessels is not directly taken into account in heat transfer.
+
+
+Several more simplified geometrical descriptions were already utilized in the literature to study heat transport in the eye;
+mostly in 2D \cite{Scott_1988,NG2006268} or in 3D \cite{NG2007829,li2010}.
+In particular, the 3D model developed in \cite{NG2007829} did not incorporate a detailed description of the vascular beds, although previous studies \cite{Scott_1988} and our further sensitivity analysis pointed out the importance of the influence of the blood temperature on the heat distribution.
+
+In order to compare in a first stage our results with previously reported findings \cite{Efron1989OcularST},
+we define on the front part of the cornea the \emph{geometrical center of the cornea} (GCC), see \Cref{fig:geo-eye}, which is an imaginary line ``cutting'' the cornea horizontally.
+This region is interesting because this part of the eye is easily accessible and the temperature can be measured non-invasively.

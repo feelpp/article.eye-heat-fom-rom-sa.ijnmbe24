@@ -1,0 +1,90 @@
+% This file was created with tikzplotly version 0.1.0.
+\begin{tikzpicture}[scale=\scl]
+
+\definecolor{3cf210509b}{RGB}{0,128,0}
+\definecolor{bc8ae11743}{RGB}{128,0,128}
+\definecolor{763bd53097}{RGB}{255,0,0}
+\definecolor{416c48ee9e}{RGB}{0,0,255}
+\definecolor{5efb101de4}{RGB}{255,165,0}
+
+\pgfplotstableread[col sep=comma]{\currfiledir/data/pointO_errorOnOutput.csv}\val
+\pgfplotstableread[col sep=comma]{\currfiledir/data/pointO_errorBound.csv}\err
+
+
+\begin{axis}[
+  % title=Convergence of the RBM,
+  xlabel={$T_O^\fem$ [K]},
+  ylabel={$|T_O^\fem - T_O^{\rbm, N}|$ [K]},
+  ymode=log,
+  xmin=289.99322094635886, xmax=306.57046532302854,
+  legend columns=5,
+  transpose legend,
+  legend style={
+    fill opacity=0.8,
+    draw opacity=1,
+    text opacity=1,
+    at={(1.03,1.0)},
+    anchor=north west
+  },
+]
+
+  \path[name path=axis] (axis cs:289.99322094635886,1e-9) -- (axis cs:306.57046532302854,1e-9);
+
+  \addplot+ [only marks, name path=N2, mark=*, opacity=0.5, mark options={solid, fill=763bd53097, color=763bd53097}]
+    table [col sep=comma, x=T_fem, y=2]
+    {\val};
+  \addlegendentry{$N=2$}
+
+  \addplot+ [mark=none, name path=error2, opacity=0.2, forget plot]
+    table [col sep=comma, x=T_fem, y=2]
+    {\err};
+
+  \addplot+ [only marks, name path=N4, mark=*, opacity=0.5, mark options={solid, fill=416c48ee9e, color=416c48ee9e}]
+    table [col sep=comma, x=T_fem, y=4]
+    {\val};
+  \addlegendentry{$N=4$}
+
+  \addplot+ [mark=none, name path=error4, opacity=0.2, forget plot]
+    table [col sep=comma, x=T_fem, y=4]
+    {\err};
+
+  \addplot+ [only marks, name path=N6, mark=*, opacity=0.5, mark options={solid, fill=3cf210509b, color=3cf210509b}]
+    table [col sep=comma, x=T_fem, y=6]
+    {\val};
+  \addlegendentry{$N=6$}
+
+  \addplot+ [mark=none, name path=error6, opacity=0.2, forget plot]
+    table [col sep=comma, x=T_fem, y=6]
+    {\err};
+
+  \addplot+ [only marks, name path=N8, mark=*, opacity=0.5, mark options={solid, fill=5efb101de4, color=5efb101de4}]
+    table [col sep=comma, x=T_fem, y=8]
+    {\val};
+  \addlegendentry{$N=8$}
+
+  \addplot+ [mark=none, name path=error8, opacity=0.2, forget plot]
+    table [col sep=comma, x=T_fem, y=8]
+    {\err};
+
+  \addplot+ [only marks, name path=N10, mark=*, opacity=0.5, mark options={solid, fill=bc8ae11743, color=bc8ae11743}]
+    table [col sep=comma, x=T_fem, y=10]
+    {\val};
+  \addlegendentry{$N=10$}
+
+  \addplot+ [mark=none, name path=error10, opacity=0.2, forget plot]
+    table [col sep=comma, x=T_fem, y=10]
+    {\err};
+
+  \addplot [thick, color=763bd53097, fill=763bd53097, fill opacity=0.2] fill between [of=error2 and error4];
+  \addlegendentry{$\Delta_2^s(\mu)$}
+  \addplot [thick, color=416c48ee9e, fill=416c48ee9e, fill opacity=0.2] fill between [of=error4 and error6];
+  \addlegendentry{$\Delta_4^s(\mu)$}
+  \addplot [thick, color=3cf210509b, fill=3cf210509b, fill opacity=0.2] fill between [of=error6 and error8];
+  \addlegendentry{$\Delta_6^s(\mu)$}
+  \addplot [thick, color=5efb101de4, fill=5efb101de4, fill opacity=0.2] fill between [of=error8 and error10];
+  \addlegendentry{$\Delta_8^s(\mu)$}
+  \addplot [thick, color=bc8ae11743, fill=bc8ae11743, fill opacity=0.2] fill between [of=error10 and axis];
+  \addlegendentry{$\Delta_{10}^s(\mu)$}
+
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,414 @@
+%!TeX root=../article.heat-fom-rom-sa.ijnmbe24.tex
+\section{Uncertainty quantification}
+\label{sec:uq}
+
+
+The \emph{uncertainty quantification} (UQ) allows quantifying the uncertainty of the model parameters on various outputs.
+In the present work, we focus on forward UQ, that is, we want to quantify the uncertainty and the sensitivity of the output of the model, given the uncertainty of the input parameters.
+More precisely, two studies are performed:
+(i) an uncertainty propagation, to understand how the uncertainties of the inputs of the model are propagated to the output via the computational model, and
+(ii) a \emph{sensitivity analysis} (SA) to assess the impact of varying selected parameters on several outputs of interest, namely temperature at specific locations in the eye.
+Their locations are detailed in \Cref{fig:outputs}.
+
+The SA is conducted in two different approaches.
+First, to recapitulate findings from the literature, we performed a deterministic SA, where for each simulation,
+only one parameter is allowed to vary in a given range, whereas the others are fixed to their baseline value.
+In a second stage, we extended the SA to a stochastic framework, where each selected parameter follows a given random distribution
+and the impact on the quantity of interest is assessed via sensitivity indices.
+The advantage of the latter is the global perspective provided by this method and its ability to capture high-order interactions among several input parameters.
+
+% The parameters and their baseline value have been presented in \Cref{sec:parameters}.
+% The output of interest for the ocular model is the temperature in specific locations.
+% Their locations are detailed in \Cref{fig:outputs}.
+
+
+
+
+\def\ech{0.62}
+\begin{figure}
+    \centering
+    \subfigure[Evaporation rate $E$]{
+    \begin{tikzpicture}[scale=\ech]
+    \begin{axis}
+        [grid=major, xlabel = {$E$ [\unit{\watt.\meter^{-2}}]}, ylabel = {$T$ [\unit{\kelvin}]},
+        yticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=0},
+        xticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=0}]
+        \addplot[colorFeel3, mark=x, line width=1pt] table[x=E, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/E_feel_K.csv};
+        \addplot[colorOoi, mark=square, line width=1pt] table[x=E, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/E_ooi_K.csv};
+        \addplot[colorScott, mark=+, line width=1pt] table[x=E, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/E_scott_K.csv};
+        \addplot[colorLi, mark=asterisk, line width=1pt] table[x=E, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/E_li_K.csv};
+    \draw[dashed, color=black!60, line width=2pt] (40, \pgfkeysvalueof{/pgfplots/ymin}) -- (40, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (20, \pgfkeysvalueof{/pgfplots/ymin}) -- (20, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (100, \pgfkeysvalueof{/pgfplots/ymin}) -- (100, \pgfkeysvalueof{/pgfplots/ymax});
+    \end{axis}
+    \end{tikzpicture}
+    }
+    \subfigure[Ambient convective coefficient $h_\text{amb}$]{
+    \begin{tikzpicture}[scale=\ech]
+    \begin{axis}
+        [grid=major, xlabel = {$h_\text{amb}$ [\unit{\watt.\meter^{-2}.\kelvin^{-1}}]}, ylabel = {$T$ [\unit{\kelvin}]},
+        yticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=0},
+        xticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=0}]
+        \addplot[colorFeel3, mark=x, line width=1pt] table[x=h_amb, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/h_amb_feel_K.csv};
+        \addplot[colorOoi, mark=square, line width=1pt] table[x=h_amb, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/h_amb_ooi_K.csv};
+        \addplot[colorScott, mark=+, line width=1pt] table[x=h_amb, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/h_amb_scott_K.csv};
+        \addplot[colorLi, mark=asterisk, line width=1pt] table[x=h_amb, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/h_amb_li_K.csv};
+    \draw[dashed, color=black!60, line width=2pt] (10, \pgfkeysvalueof{/pgfplots/ymin}) -- (10, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (8, \pgfkeysvalueof{/pgfplots/ymin}) -- (8, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (15, \pgfkeysvalueof{/pgfplots/ymin}) -- (15, \pgfkeysvalueof{/pgfplots/ymax});
+    \end{axis}
+    \end{tikzpicture}
+    }
+    \subfigure[Blood convection coefficient $h_\text{bl}$]{
+    \begin{tikzpicture}[scale=\ech]
+    \begin{axis}
+        [grid=major, , xlabel = {$h_\text{bl}$ [\unit{\watt.\meter^{-2}.\kelvin^{-1}}]}, ylabel = {$T$ [\unit{\kelvin}]},
+        yticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=1},
+        xticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=0}]
+        \addplot[colorFeel3, mark=x, line width=1pt] table[x=h_bl, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/h_bl_feel_K.csv};
+        \addplot[colorOoi, mark=square, line width=1pt] table[x=h_bl, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/h_bl_ooi_K.csv};
+        \addplot[colorScott, mark=+, line width=1pt] table[x=h_bl, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/h_bl_scott_K.csv};
+        \addplot[colorLi, mark=asterisk, line width=1pt] table[x=h_bl, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/h_bl_li_K.csv};
+    \draw[dashed, color=black!60, line width=2pt] (65, \pgfkeysvalueof{/pgfplots/ymin}) -- (65, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (65, \pgfkeysvalueof{/pgfplots/ymin}) -- (65, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (110, \pgfkeysvalueof{/pgfplots/ymin}) -- (110, \pgfkeysvalueof{/pgfplots/ymax});
+    \end{axis}
+    \end{tikzpicture}
+    }
+    \subfigure[Conductivity of the lens $k_\text{lens}$]{
+    \begin{tikzpicture}[scale=\ech]
+    \begin{axis}
+        [grid=major, , xlabel = {$k_\text{lens}$ [\unit{\watt.\meter^{-1}.\kelvin^{-1}}]}, ylabel = {$T$ [\unit{\kelvin}]},
+        yticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=1},
+        xticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=1}]
+        \addplot[colorFeel3, mark=x, line width=1pt] table[x=k_lens, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/k_lens_feel_K.csv};
+        \addplot[colorOoi, mark=square, line width=1pt] table[x=k_lens, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/k_lens_ooi_K.csv};
+        \addplot[colorScott, mark=+, line width=1pt] table[x=k_lens, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/k_lens_scott_K.csv};
+    \draw[dashed, color=black!60, line width=2pt] (0.4, \pgfkeysvalueof{/pgfplots/ymin}) -- (0.4, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (0.21, \pgfkeysvalueof{/pgfplots/ymin}) -- (0.21, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (0.544, \pgfkeysvalueof{/pgfplots/ymin}) -- (0.544, \pgfkeysvalueof{/pgfplots/ymax});
+    \end{axis}
+    \end{tikzpicture}
+    }
+    \subfigure[Ambient temperature $T_\text{amb}$]{
+    \begin{tikzpicture}[scale=\ech]
+    \begin{axis}
+        [grid=major, , xlabel = {$T_\text{amb}$ [\unit{\degreeCelsius}]}, ylabel = {$T$ [\unit{\kelvin}]},
+        yticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=0},
+        xticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=0}]
+        \addplot[colorFeel3, mark=x, line width=1pt] table[x=T_amb, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/T_amb_feel_K.csv};
+        \addplot[colorOoi, mark=square, line width=1pt] table[x=T_amb, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/T_amb_ooi_K.csv};
+        \addplot[colorScott, mark=+, line width=1pt] table[x=T_amb, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/T_amb_scott_K.csv};
+        \addplot[colorLi, mark=asterisk, line width=1pt] table[x=T_amb, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/T_amb_li_K.csv};
+    \draw[dashed, color=black!60, line width=2pt] (20, \pgfkeysvalueof{/pgfplots/ymin}) -- (20, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (10, \pgfkeysvalueof{/pgfplots/ymin}) -- (10, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (30, \pgfkeysvalueof{/pgfplots/ymin}) -- (30, \pgfkeysvalueof{/pgfplots/ymax});
+    \end{axis}
+    \end{tikzpicture}
+    }
+    \subfigure[Blood temperature $T_\text{bl}$]{
+    \begin{tikzpicture}[scale=\ech]
+    \begin{axis}
+        [grid=major, xlabel = {$T_\text{bl}$ [\unit{\degreeCelsius}]}, ylabel = {$T$ [\unit{\kelvin}]},
+        yticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=0},
+        xticklabel style={scaled ticks=false, /pgf/number format/fixed, /pgf/number format/precision=0}]
+        \addplot[colorFeel3, mark=x, line width=1pt] table[x=T_bl, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/T_bl_feel_K.csv};
+        \addplot[colorOoi, mark=square, line width=1pt] table[x=T_bl, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/T_bl_ooi_K.csv};
+        \addplot[colorScott, mark=+, line width=1pt] table[x=T_bl, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/T_bl_scott_K.csv};
+        \addplot[colorLi, mark=asterisk, line width=1pt] table[x=T_bl, y=OK, col sep=comma] {fig/eye/results/deterministic-SA/T_bl_li_K.csv};
+    \draw[thick, dashed, color=black!60, line width=2pt]  (37, \pgfkeysvalueof{/pgfplots/ymin}) -- (37, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (35.15, \pgfkeysvalueof{/pgfplots/ymin}) -- (35.15, \pgfkeysvalueof{/pgfplots/ymax});
+    % \draw[dashed, color=red] (38.85, \pgfkeysvalueof{/pgfplots/ymin}) -- (38.85, \pgfkeysvalueof{/pgfplots/ymax});
+    \end{axis}
+    \end{tikzpicture}
+    }
+
+    \caption{Results of the DSA for the 6 parameters studied, among previous studies from the literature
+        (markers \textcolor{colorFeel3}{\textsf{x} $\Em_\text{NL}(\mu)$}, \textcolor{colorOoi}{$\square$ \cite{NG2006268}}, \textcolor{colorScott}{\textsf{+} \cite{Scott_1988}}, \textcolor{colorLi}{$\ast$ \cite{li2010}}).
+        The vertical dashed line corresponds to the baseline value of the parameter.}
+    \label{fig:det-sa}
+\end{figure}
+
+% This section aims at determining the input parameters that are the most sensitive to the output selected.
+% This is done in two different ways, a deterministic sensitivity analysis where only one parameter is allowed to vary while all the others are set to their baseline value and a stochastic sensitivity analysis where each parameter follows a given random distribution.
+
+
+\subsection{Deterministic sensitivity analysis}
+\label{sec:DSA}
+
+Our initial investigation of the impact of varying selected parameters is conducted through a \emph{deterministic sensitivity analysis} (DSA).
+Specifically, we choose a parameter among the ones defined in \Cref{tab:parameters}, and we set the other to their baseline value.
+Next, we vary the selected parameter among pre-defined values and compute the outputs of the high fidelity model.
+Similar studies were performed in \cite{Scott_1988, NG2006268, li2010}.
+We gather in the present study information about several parameters of interest for the heat transfer model from these studies,
+namely baseline values and ranges.
+These variations correspond not only to physiological conditions but also include some extreme situations.
+We postpone a more in-depth discussion on this topic to \Cref{sec:SSA}, where the random distributions characterizing these parameters are set up.
+Note that in this case, we do not need to use the reduced model, since only a relatively small number of simulations is required.
+
+In \Cref{fig:det-sa}, we show the results of the DSA for the parameter $\mu=\{E, h_\text{amb}, h_\text{bl}, k_\text{lens}, T_\text{amb}, T_\text{bl}\}$, on point $O$ which is at the surface of the cornea.
+The plain-line curves correspond to the results reported in the literature, which we compare with the results of our simulations;
+the vertical dashed line corresponds to the baseline value for each parameter.
+The results are in very good agreement with previous findings and show that temperature at the level of the cornea is strongly influenced by  $h_\text{amb}$, $T_\text{amb}$, $E$, and $T_\text{bl}$,
+whereas the influence of $h_\text{bl}$ and $k_\text{lens}$ is less significant.
+For instance, high air conductivity can result in a temperature \qty{7}{\kelvin} lower than the baseline value,
+while the difference obtained for $h_\text{bl}$ and $k_\text{lens}$ in the computed temperature is at most of \qty{1}{\kelvin}.
+
+
+
+
+
+
+\subsection[Stochastic sensitivity analysis]{Stochastic sensitivity analysis (SSA)}
+\label{sec:SSA}
+
+We consider an output quantity $Y$ depending on a set of input parameters $\mu\in\Dmu$,
+and we estimate the sensitivity of $Y$ to each parameter $\mu_i$ for $i\in\llbracket 1,d\rrbracket$, where $d$ is the dimension of the parametric space.
+To this end, we compute the \emph{Sobol' sensitivity indices} introduced in \cite{Sobol1993SensitivityEF} as follows.
+We assume that each component $\mu_i$ of $\mu$ follows a random variable $X_i$, independent of the others.
+The first-order indices are defined as:
+
+\begin{equation}
+    S_i := \frac{\var\left(\E\left[Y\middle|X_i\right]\right)}{\var(Y)}
+\end{equation}
+where $\var(Y)$ corresponds to the variance of $Y$ including the eventual non-linearity effect of the coefficient on the output,
+and $\var\left(\E\left[Y\middle|X_i\right]\right)$ is the variance of the conditional expectation of $Y$ given $X_i$, corresponding to the first order effect of the parameter $\mu_i$ on the output:
+if the parameter modeled by the distribution $X_j$ has a great impact on the output $Y$, then $\E\left[Y\middle|X_j\right]$ will vary has well, and so its variance.
+
+We also define the \emph{total Sobol' index}:
+
+\begin{equation}
+    S_i^\text{tot} := \frac{\var\left(\E\left[Y\middle|X_{(-i)}\right]\right)}{\var(Y)} = 1 - S_{-i}
+\end{equation}
+where $X_{(-i)} = (X_1,\cdots,X_{i-1},X_{i+1},\cdots,X_d)$ is the set of parameters without the parameter $X_i$, and $S_{-i}$ is the sum of the indices where $X_i$ is not present.
+
+% We may also introduce Sobol's indices of higher order, to estimate the impact of coupled parameters on the output, but as we will see in the results this is not necessary.
+
+To compute the Sobol' indices, we use an algorithm of functional chaos, implemented in the library OpenTURNS \cite{Baudin2016} by the class \texttt{FunctionalChaosAlgorithm}, using a bootstrap method%
+\footnote{See documentation \url{https://openturns.github.io/openturns/latest/auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_sobol_confidence.html}}
+for the confidence intervals.
+
+
+
+\subsubsection{Choice of the distributions}
+
+We discuss now the prior distributions for each parameter.
+Each parameter does not depend on the others, resulting in a family of 6 random independent variables.
+\Cref{fig:eye:distributions} shows the probability density function (PDF) of distributions of the parameters,
+associated with the baseline values (see \Cref{tab:parameters}),
+where the parameters used in the literature for the deterministic sensitivity analysis are represented with a vertical line.
+We present hereafter some details on how the random distributions were constructed.
+
+
+\begin{itemize}
+    \item \textbf{Evaporation rate $E$:} According to \cite{Scott_1988}, the evaporation rate's range is of 40 to 100 \unit{\watt.\meter^{-2}}, using data from literature \cite{adler53}.
+    The value $E=\qty{40}{\watt.\meter^{-2}}$ is chosen as the baseline value.
+    Some high values are also considered, to study the impact of important evaporation rates.
+    The values used in the literature run from 20 to \qty{320}{\watt.\meter^{-2}}.
+    As this parameter varies by several orders of magnitude, we decided to use a log-normal distribution to represent it.
+    More precisely we set $E\sim \logN(\mu_E, \sigma_E, \gamma_E)$, with $\sigma_E = 0.7$, $\mu_E=\log(40)-\frac{0.15^2}{2}$ and $\gamma_E=20$, restricted to $[20, 130]$.
+    The distribution is presented in \Cref{fig:eye:distributions:E}.
+    This choice of the distribution leads to a mean value of $\overline{E}=\qty{55.8}{\watt.\meter^{-2}}$.
+
+    \item \textbf{Ambient air convection coefficient $h_\text{\normalfont amb}$:}
+    In \cite{Scott_1988}, the sole value given for the ambient air convection coefficient is \qty{10}{\watt.\meter^{-2}.\kelvin^{-1}}, and similar values are used to run the DSA, from 8 to 15~\unit{\watt.\meter^{-2}.\kelvin^{-1}}.
+    Other results in the literature coroborate this value: \cite[Table 12.2]{KOSKY2013259} reports a range of 2.5 to 25~\unit{\watt.\meter^{-2}.\kelvin^{-1}} for a free convection, and 10 to \qty{500}{\watt.\meter^{-2}.\kelvin^{-1}} for a forced convection.
+    \cite{engeneer-edge} proposes a range of 10 to \qty{100}{\watt.\meter^{-2}.\kelvin^{-1}} for the air.
+    In their DSA, \cite{NG2006268} and \cite{li2010} use higher values of $h_\text{amb}$, up to \qty{100}{\watt.\meter^{-2}.\kelvin^{-1}} to simulate a forced convection condition.
+    As high values are not a common case, such a coefficient should not have a high frequency in the distribution.
+    We chose to use a log-normal distribution: $h_\text{amb}\sim \logN\left(\log(10)-\frac{1}{2}, 1, 8\right)$.
+    In Remark \ref{rem:linearization}, we discussed the linearization process of the model, inducing the usage of a fixed parameter $h_\text{r}$ chosen to fit temperature in usual ambient room conditions,
+    which leads to a restriction of the distribution to the interval $[8, 100]~\unit{\watt.\meter^{-2}.\kelvin^{-1}}$.
+    The distribution is presented in \Cref{fig:eye:distributions:hamb}.
+    The mean value of the distribution is $\overline{h_\text{amb}}=\qty{17.6}{\watt.\meter^{-2}.\kelvin^{-1}}$.
+
+    \item \textbf{Blood convection coefficient $h_\text{\normalfont bl}$:} A control value of \qty{65}{\watt.\meter^{-2}.\kelvin^{-1}}, derived from experimental data \cite{Lagendijk_1982} is provided in \cite{Scott_1988}.
+    For the DSA, the values used run from 50 to \qty{120}{\watt.\meter^{-2}.\kelvin^{-1}}.
+    This leads us to the following assumption for the distribution of the parameter: $h_\text{bl}\sim \logN\left(\log(65)-\frac{0.15^2}{2}, 0.15, 0\right)$, restricted over $[50, 120]$, see \Cref{fig:eye:distributions:hbl}.
+    The mean of this distribution is $\overline{h_\text{bl}}=\qty{65.8}{\watt.\meter^{-2}.\kelvin^{-1}}$.
+
+    \item \textbf{Lens conductivity $k_\text{\normalfont lens}$:} This parameter is chosen among all the conductivities since the water content of the lens varies with aging \cite{Scott_1988}.
+    \cite{Scott_1988} and \cite{NG2006268} run the DSA with this parameter, using values from 0.21 to \qty{0.544}{\watt\metre^{-1}\kelvin^{-1}}.
+    As the range of values is not very large, it seems reasonable to use a uniform distribution for this parameter: $k_\text{lens}\sim \unif(0.21, 0.544)$, see \Cref{fig:eye:distributions:klens}.
+
+    \item \textbf{Ambient temperature $T_\text{\normalfont amb}$:} The baseline value of this parameter is taken to a usual room temperature of \qty{294}{\kelvin} (\qty{20}{\celsius}).
+    The values used for the DSA vary from extreme conditions of \qty{273}{\kelvin} (\qty{0}{\celsius}) to \qty{308}{\kelvin} (\qty{35}{\celsius}).
+    As these extreme values are not very common, we choose to restrict the values taken by $T_\text{amb}$ from \qty{283.15}{\kelvin} (\qty{-35}{\celsius}) to \qty{303.15}{\kelvin} (\qty{30}{\celsius}): $T_\text{amb}\sim \unif(283.15, 303.15)$.
+    The distribution is presented in \Cref{fig:eye:distributions:Tamb}.
+
+    \item \textbf{Blood temperature $T_\text{\normalfont bl}$:} The temperature of human blood is commonly accepted to be \qty{310}{\kelvin} (\qty{37}{\celsius}).
+    For the DSA, cases of hypothermia and hyperthermia are considered, with a range from \qtyrange{308}{312.15}{\kelvin} (\qtyrange{35}{39}{\celsius}).
+    We therefore take $T_\text{bl}\sim \unif(308, 312.15)$, see \Cref{fig:eye:distributions:Tbl}.
+\end{itemize}
+
+
+
+\begin{figure}
+    \centering
+    \def\chl{0.6}
+    \subfigure[Distribution of $E$\label{fig:eye:distributions:E}]{
+        \input{fig/eye/distributions/E.tikz}
+    }
+    \subfigure[Distribution of $h_\text{amb}$\label{fig:eye:distributions:hamb}]{
+        \input{fig/eye/distributions/h_amb.tikz}
+    }
+    \subfigure[Distribution of $h_\text{bl}$\label{fig:eye:distributions:hbl}]{
+        \input{fig/eye/distributions/h_bl.tikz}
+    }
+    \subfigure[Distribution of $k_\text{lens}$\label{fig:eye:distributions:klens}]{
+        \input{fig/eye/distributions/k_lens.tikz}
+    }
+    \subfigure[Distribution of $T_\text{amb}$\label{fig:eye:distributions:Tamb}]{
+        \input{fig/eye/distributions/T_amb.tikz}
+    }
+    \subfigure[Distribution of $T_\text{bl}$\label{fig:eye:distributions:Tbl}]{
+        \input{fig/eye/distributions/T_bl.tikz}
+    }
+    \caption{Distributions of the parameters. The vertical lines represent the values chosen in literature for the DSA.}
+    \label{fig:eye:distributions}
+\end{figure}
+
+
+\subsubsection{Uncertainty propagation}
+
+We focus on the distribution of outputs of interest, from a random sample of the input parameters of get from the distributions presented $\pgfmathprintnumber{10000}$ points, which leads to a number of $\pgfmathprintnumber{10000}$ simulations.
+The computational cost of the high fidelity simulations becomes in this case prohibitive and therefore we employ the reduced basis metamodel developed in \Cref{sec:rbm}.
+\Cref{fig:uncertainty-propagation} presents the distribution of three outputs, namely the mean of the temperature over the cornea $T_\text{cornea}$,
+and the temperature on points $O$ and $G$ respectively are the front and the back of the eyeball.
+Note that $T_O$ and $T_\text{cornea}$ display a Gaussian distribution, whereas $T_G$ is more difficult to interpret, but could correspond to a uniform or bi-modal distribution.
+
+
+
+We provide in \Cref{tab:results:uncertainty-propagation} results about mean values and standard deviation for the same quantities.
+We note that the mean values of $T_O$ and $T_\text{cornea}$ are of the same order of magnitude as the experimental data in the validation section (\Cref{sec:validation}): the difference of temperature is about \qty{2}{\kelvin}, and standard deviations are in the same ranges.
+The mean value of $T_G$ is very close to results reported in \Cref{fig:res:line} from the literature with a small standard deviation.
+
+\begin{table}
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        & $T_\text{cornea}$ & $T_O$ & $T_G$ \\
+        \midrule
+        Mean & 305.590082 & 303.185187 & 310.028526 \\
+        Standard deviation & 1.788358 & 2.457063 & 1.055978 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Statistics of the outputs.}
+    \label{tab:results:uncertainty-propagation}
+\end{table}
+
+
+\begin{figure}
+    \centering
+    \input{fig/eye/results/convergence/FEM-vs-RBM/dist.tikz}
+    \caption{Distribution of the output, from the composed input distribution.}
+    \label{fig:uncertainty-propagation}
+\end{figure}
+
+
+
+
+
+
+\subsubsection{Results of the SA}
+
+We perform a sensitivity analysis to compute Sobol's indices, a convergence analysis varying the sampling size $N_\text{param}$.
+\Cref{tab:results:SSA:convergence} reports the maximal deviation of these indices, and the time taken by the application to compute the 6 sets of Sobol's indices.
+
+Additionally, we compute the \emph{predictivity factor} $Q_2$ for the polynomial chaos metamodel is defined as:
+\begin{equation}
+    Q_2:= 1 - \dfrac{\sum_{l=1}^{N}\big(Y_l - \widehat{f}(X_l)\big)^2}{\var(Y)},
+\end{equation}
+measuring how accurate the metamodel $\widehat{f}$ is at predicting the output $Y$ from the input $X$.
+The closer $Q_2$ is to 1, the better the metamodel is.
+In the context of the Sobol's indices experiment, the metamodel $\widehat{f}$ is the polynomial chaos expansion of the output $Y$.
+The test of convergence is performed using the temperature on point $O$ as the output.
+The convergence of Sobol's indices is reached for $N_\text{param} = 200$ with a $10^{-2}$ accuracy, which is a threshold used in the sequel.
+
+\begin{table}
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        $N_\text{param}$ & Max deviation & $t_\text{exec}$ & $Q_2$\\
+        \midrule
+        60  & 0.18102 & \qty{0.75609}{\second} & 0.999153\\
+        100 & 0.03698 & \qty{1.99651}{\second} & 0.992648\\
+        150 & 0.02969 & \qty{2.83743}{\second} & 0.99986 \\
+        200 & 0.02923 & \qty{4.16046}{\second} & 0.998926\\
+        400 & 0.00739 & \qty{8.36701}{\second} & 0.999931\\
+        600 & 0.00496 & \qty{15.7947}{\second} & 0.9998  \\
+        1000& 0.00248 & \qty{22.364 }{\second} & 0.999904\\
+        \bottomrule
+    \end{tabular}
+    \caption{Convergence of the Sobol's indices.}
+    \label{tab:results:SSA:convergence}
+\end{table}
+
+
+\Cref{fig:results:SSA:sobol} shows the results of the Sobol analysis for different outputs of interest.
+Recall that \Cref{fig:outputs} shows where the points are in the eye.
+
+In the deterministic sensitivity analysis conducted in \Cref{sec:DSA}, the impact of the variation of a sole parameter on the temperature at point $O$ was studied.
+Using Sobol's indices, we are now able to measure the impact when all of them are varying.
+The results of Sobol analysis at point $O$ presented in \Cref{fig:results:SSA:sobol:O} are in very good agreement with the deterministic findings:
+the temperature at the level of the cornea is strongly influenced by external factors such as $h_\text{amb}$, as well subject-specific parameters such as $T_\text{amb}$, $E$, and $T_\text{bl}$,
+Moreover, it is minimally influenced by the lens conductivity $k_\text{lens}$ and the blood convection coefficient $h_\text{bl}$.
+
+Sobol's indices for several other locations are gathered in \Cref{fig:results:SSA:sobol}(b--f).
+From these results, we can infer the following ranking of the influential parameters: $T_\text{amb}$, $h_\text{amb}$, $E$, and $T_\text{bl}$.
+In particular, the dependence of the ambient temperature $T_\text{amb}$ decreases when we go deeper inside the eye.
+Precisely, the impact of $T_\text{amb}$ is still significant for the mean temperature of the cornea, but the other parameters are equally influential.
+These behaviors are coherent with physiological conditions.
+Moreover, regardless of the output studied, the parameters $k_\text{lens}$ and $h_\text{bl}$ are minimally influencing the output.
+Consequently in future simulations, their value can be set at baseline.
+Surprisingly, the temperature at $B_1$, on the lens, is minimally influenced by $k_\text{lens}$, but this parameter has a minimal role in the modeling process.
+On the other hand, $T_\text{bl}$ is very influential at $D_1$ and $G$, close to vascular beds,
+again in a coherent manner with the physiological situation.
+Finally, we can notice a slight difference between the first-order and total-order indices, mostly for $h_\text{amb}$ and $T_\text{amb}$,
+implying that there are high-order interactions among these selected parameters.
+To measure the impact of coupled parameters, second-order Sobol's indices computation is required, but the polynomial chaos expansion does not directly provide these values.
+Alternatively, a Monte-Carlo based method could be implemented which is very costly to the computational viewpoint.
+
+\pgfplotsset{
+   textnumber/.style={
+     /pgf/number format/.cd,% <- change the prefix for the following options
+     fixed,
+     use comma,
+     fixed zerofill,
+     precision=4,
+     1000 sep={.},
+     },
+  }
+
+
+\begin{figure}
+    \centering
+    \def\mymarker{x}
+    \def\chl{0.96}
+    \subfigure[Output $T_\text{O}$.\label{fig:results:SSA:sobol:O}]{
+        \def\sobolpath{fig/eye/results/SSA/sobol-O.tikz}
+        \input{fig/eye/results/SSA/sobol-template.tikz}
+    }
+    \subfigure[Mean temperature on the cornea.]{
+        \def\sobolpath{fig/eye/results/SSA/sobol-cornea.tikz}
+        \input{fig/eye/results/SSA/sobol-template.tikz}
+    }
+    \subfigure[Output $T_{B_1}$.]{
+        \def\sobolpath{fig/eye/results/SSA/sobol-B1.tikz}
+        \input{fig/eye/results/SSA/sobol-template.tikz}
+    }
+    \subfigure[Output $T_C$.]{
+        \def\sobolpath{fig/eye/results/SSA/sobol-C.tikz}
+        \input{fig/eye/results/SSA/sobol-template.tikz}
+    }
+    \subfigure[Output $T_{D_1}$.]{
+        \def\sobolpath{fig/eye/results/SSA/sobol-D1.tikz}
+        \input{fig/eye/results/SSA/sobol-template.tikz}
+    }
+    \subfigure[Output $T_G$.]{
+        \def\sobolpath{fig/eye/results/SSA/sobol-G.tikz}
+        \input{fig/eye/results/SSA/sobol-template.tikz}
+    }
+    \caption{Sobol's indices for the SSA.}
+    \label{fig:results:SSA:sobol}
+\end{figure}

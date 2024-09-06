@@ -1,0 +1,194 @@
+%!TeX root=../article.heat-fom-rom-sa.ijnmbe24.tex
+\section{Three-dimensional biophysical model}
+\label{sec:model-phys}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{tex/2.1-model-geo}
+
+
+We focus on \emph{outputs of interest} that are studied in the literature \cite{Scott_1988, NG2006268}.
+These outputs are the temperature values at given locations or the mean temperature on a given domain.
+Precisely, we select on points present at the interface of two regions of the eye, as well as the mean temperature over the cornea.
+For a precise description of these locations, see \Cref{fig:outputs}.
+
+
+\begin{figure}
+    \centering
+    \def\svgwidth{0.5\columnwidth}
+    \import{./fig/eye/vectorized-figures}{eye-cut.pdf_tex}
+    \caption{Featured geometrical locations for the output of interest (pointwise temperature).}
+    \label{fig:outputs}
+\end{figure}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Biomechanical non-linear continuous model and its linearization}
+
+Based on \Cref{sec:model-geo}, the geometry of the eye can be written as a disjoint union of different regions:
+$\Omega = \bigsqcup_{i=1}^{10} \Omega_i$, where $i$ is the index of the subdomain and $\Omega_i$ corresponds to the following regions: cornea, vitreous humor, aqueous humor, retina, iris, choroid, lens, sclera, lamina cribrosa, and optic nerve.
+
+% The following model has first been introduced in \cite{Scott_1988}, where a similar analysis was made.
+% The geometry used in \cite{Scott_1988} is a 2D geometry composed of six regions: cornea, aqueous humor, lens, iris, ciliary body, and vitreous humor.
+% \cite{NG2006268,NG2007829} also run this analysis with a similar geometry in both 2D and 3D, using a FEM model.
+% \cite{li2010} used the same geometry to run simulations, using $\alpha$ finite element method.
+% The novelty of our geometry is that the iris and choroid, forming vascular beds, are added to it.
+% We will determine whether or not the addition of it results in a better understanding of heat transfer in the eyeball.
+
+\begin{subequations}
+We focus on stationary heat transfer in this domain.
+Following \cite{Scott_1988, NG2006268} the steady-state condition of the heat transfer in the human eye can be described by the following system
+\begin{equation}
+    \nabla\cdot\left(k_i\,\nabla T\right) = 0\qquad\text{ in }\Omega = \sqcup_{i=1}^{10}\Omega_i
+    \label{eq:model:heat}
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $i$ is the volume index (cornea, vitreousHumor...),
+    \item $T_i$ [\unit{\kelvin}] is the temperature in the domain $\Omega_i$,
+    \item $k_i$ [\unit{\watt.\meter^{-1}.\kelvin^{-1}}] is the thermal conductivity of $\Omega_i$.
+\end{itemize}
+
+We set the global thermal conductivity $k$ [\unit{\watt.\meter^{-1}.\kelvin^{-1}}] as a discontinuous piece-wise constant function: $k = k_i$ on $\Omega_i$.
+The boundary $\partial\Omega$ is decomposed as: $\partial\Omega = \Gamma_\text{amb}\cup\Gamma_\text{body}$ (see \Cref{fig:boundary-conditions}),
+where $\Gamma_\text{amb}$ corresponds to the boundary region exposed to the ambient environment and $\Gamma_\text{body}$ the boundary of the internal domain.
+Denote by $\n$ the outward normal vector to the domain $\Omega$.
+The following boundary conditions are adopted:
+
+\begin{itemize}
+    \item To model the exchange between the eye and the ambient air, and incorporate radiative heat transfer we impose the following non-linear Neumann condition:
+        % \qs{sont-ce vraiment des conditions de Neumann ? selon wikipedia: $\partial_{\n} T(x) = f(x)$ et nous on a $\partial_{\n} T(x) = f(T,x)$}
+        \begin{equation}
+        -k\dfrac{\partial T}{\partial \n} = h_\text{amb}(T-T_\text{amb}) + \sigma\varepsilon(T^4-T_\text{amb}^4) + E
+        \quad\text{on }\Gamma_\text{amb}
+        \label{eq:model:neumann}
+        \end{equation}
+        Three terms are present in this condition to describe different heat loss mechanisms occurring on the cornea:
+        (i) The first term in the equation represents the convective heat transfer between the surface of the eye and the surrounding air.
+        The parameter $h_\text{amb}$ [\unit{\watt.\meter^{-2}.\kelvin^{-1}}] is the air convective coefficient, and $T_\text{amb}$ [\unit{\kelvin}] is the ambient temperature;
+        (ii) the second term represents the radiative heat transfer between the surface of the eye and the surrounding environment,
+        where the parameter $\sigma$ is the Stefan-Boltzmann constant ($\sigma = \qty{5.67e-8}{\watt.\meter^{-2}.\kelvin^{-1}}$), and $\varepsilon$ [--] is the emissivity of the surface;
+        (iii) the third term represents the heat loss due to tear evaporation.
+        The parameter $E$ [\unit{\watt.\meter^{-2}}] represents the heat transfer rate due to evaporation, which depends on the environmental conditions and the tear film characteristics.
+        % Tear evaporation is a natural process that occurs at the surface of the eye, where tears constantly evaporate into the surrounding air.
+        This process causes a cooling effect on the surface of the eye, which can be significant in dry environments or cases of reduced tear production.
+        % The heat transfer rate due to tear evaporation depends on several factors, including the temperature and humidity of the surrounding air, the composition of the tear film, and the thickness of the tear film.
+
+        % This condition stands over the external part of the cornea, which is in contact with the ambient air. In the following, we will denote with $\Gamma_\text{amb}$ this domain.
+    \item  To model the thermal exchanges between the eye and the body, we impose:
+        \begin{equation}
+        -k\frac{\partial T}{\partial\n} = h_\text{bl}(T-T_\text{bl})
+        \quad\text{on }\Gamma_\text{body}
+        \label{eq:model:robin}
+        \end{equation}
+        where the parameter $h_\text{bl}$ [\unit{\watt.\meter^{-2}.\kelvin^{-1}}] is the blood convection coefficient and $T_\text{bl}$ [\unit{\kelvin}] is the blood temperature.
+\end{itemize}
+
+
+
+% \Cref{fig:boundary-conditions} represents the emplacements where these conditions stand, through a 2D cut of the geometry.
+
+Finally, to ensure a continuous flow of heat flux and no temperature jump, we impose at the interface between two adjacent regions $\Omega_i$ and $\Omega_j$ the following condition:
+
+\begin{equation}
+\begin{cases}
+    \begin{tabular}{rcl}
+        $T_i$ & $=$ & $T_j$\\
+        $k_i(\nabla T_i\cdot\n_i)$ & $=$ & $-k_j(\nabla T_j\cdot\n_j)$
+    \end{tabular}
+    \text{on } \partial\Omega_i\cap\partial\Omega_j
+\end{cases}
+\label{eq:model:interface}
+\end{equation}
+\label{eq:model}
+where $\n_i$ (resp. $\n_j$) denotes the outward normal vector to the domain $\Omega_i$ (resp. $\Omega_j$).
+
+\end{subequations}
+
+
+
+\begin{figure}
+    \centering
+    \def\svgwidth{0.3\columnwidth}
+    \import{./fig/eye/vectorized-figures/}{boudaries_color_free.pdf_tex}
+    \caption{Description of the physical boundaries and interfaces of the domain $\Omega$.}
+    \label{fig:boundary-conditions}
+\end{figure}
+
+
+System (\ref{eq:model:heat}) - (\ref{eq:model:interface}) defines a non-linear problem, denoted $\Em_\text{NL}$ in the sequel.
+
+
+
+\begin{rem}
+    \label{rem:linearization}
+    Note that the condition (\ref{eq:model:neumann}) modeling radiative transfer is non-linear, because of the term in $T^4$,
+    which requires a more complex treatment, both from the mathematical standpoint, for the reduced basis method; and from the numerical standpoint, due to extra computational cost.
+    % The issue raised by this is that the numerical resolution requires extra effort.
+    % Moreover, the reduced basis method we will use further does not allow us to compute non-linear problems.
+    As an alternative, a linearization of the condition (\ref{eq:model:neumann}) was proposed in \cite{Scott_1988}:
+
+    \begin{equation*}
+        \sigma\varepsilon (T^4-T_\text{amb}^4) = (T-T_\text{amb})\underbrace{\sigma\varepsilon(T^2+T^2_\text{amb})(T+T_\text{amb})}_{=: h_\text{r}},
+    \end{equation*}
+    which leads to a linear Robin condition.
+    The value $h_\text{r}$ stands for the \emph{radiation heat transfer coefficient} and is approximately equal to \qty{6}{\watt.\meter^{-2}.\kelvin^{-1}} \cite{Scott_1988}.%, corresponds to a range of tissue temperatures $T_\text{bl}$ between 30 and 45$^\circ$C, and the usual ambient room temperature.
+
+    Condition (\ref{eq:model:neumann}) can hence be rewritten as:
+
+    \begin{equation}
+        -k\dfrac{\partial T_i}{\partial \n} = h_\text{amb}(T-T_\text{amb}) + h_\text{r}(T-T_\text{amb}) + E \qquad\text{ on }\Gamma_\text{amb}
+        \label{eq:neumann-lin}
+    \end{equation}
+
+    The model described by Equations (\ref{eq:model:heat})-(\ref{eq:neumann-lin})-(\ref{eq:model:robin})-(\ref{eq:model:interface}) is further denoted $\Em_\text{L}$.
+\end{rem}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Model parameters}
+\label{sec:parameters}
+
+In the model presented in the previous section, many parameters are involved, but not all of them are directly measurable.
+Moreover, inherent uncertainties due to noise and individual variability must be taken into account in the modeling process.
+We therefore fixed in a first stage a set of baseline values, corresponding to the nominal values for the human body, according to the literature \cite{Scott_1988, NG2006268} (see \Cref{tab:parameters}).
+In a second step, we split the total set of parameters into two subsets:
+a first part kept fixed to baseline values, and a second part that varies in a certain range (see \Cref{tab:parameters}).
+The aim is to perform a refined sensitivity analysis, that encompasses previously published studies \cite{Scott_1988, NG2006268, NG2007829}, and extends the analysis to a larger parameter space.
+
+\begin{table}
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{*{5}{c}}
+        \toprule
+        \textsf{\textbf{Symbol}} & \textsf{\textbf{Name}} & \textsf{\textbf{Dimension}} & \textsf{\textbf{Baseline value}} & \textsf{\textbf{Range}}\\
+        \midrule
+        $T_\text{amb}$                                  & Ambient temperature                   & [\unit{\kelvin}]                        & 298    & [283.15, 303.15] \\
+        $T_\text{bl}$                                   & Blood temperature                     & [\unit{\kelvin}]                        & 310    & [308.3, 312] \\
+        $h_\text{amb}$                                  & Ambient air convection coefficient    & [\unit{\watt.\meter^{-2}.\kelvin^{-1}}] & 10     & [8, 100] \\
+        $h_\text{bl}$                                   & Blood convection coefficient          & [\unit{\watt.\meter^{-2}.\kelvin^{-1}}] & 65     & [50, 110] \\
+        $E$                                             & Evaporation rate                      & [\unit{\watt.\meter^{-2}}]              & 40     & [20, 320] \\
+        $k_\text{lens}$                                 & Lens conductivity                     & [\unit{\watt.\meter^{-1}.\kelvin^{-1}}] & 0.4    & [0.21, 0.544] \\
+        $k_\text{cornea}$                               & Cornea conductivity                   & [\unit{\watt.\meter^{-1}.\kelvin^{-1}}] & 0.58   & -- \\
+        \begin{tabular}{c}$k_\text{sclera}=k_\text{iris}
+            =$\\$k_\text{lamina}=k_\text{opticNerve}$\end{tabular}       & Eye envelope components conductivity  & [\unit{\watt.\meter^{-1}.\kelvin^{-1}}] & 1.0042 & -- \\
+        $k_\text{aqueousHumor}$                         & Aqueous humor conductivity            & [\unit{\watt.\meter^{-1}.\kelvin^{-1}}] & 0.28   & -- \\
+        $k_\text{vitreousHumor}$                        & Vitreous humor conductivity           & [\unit{\watt.\meter^{-1}.\kelvin^{-1}}] & 0.603  & -- \\
+        $k_\text{choroid}=k_\text{retina}$              & Vascular beds conductivity            & [\unit{\watt.\meter^{-1}.\kelvin^{-1}}] & 0.52   & -- \\
+        $\varepsilon$                                   & Emissivity of the cornea              & [--]                                    & 0.975  & -- \\
+        \bottomrule
+    \end{tabular}
+    }
+    \caption{Parameters involved in the model, baseline values and ranges used in the sensitivity analysis.}
+    \label{tab:parameters}
+\end{table}
+
+Specifically, we set the varying \emph{parameter space} $\Dmu\subset\R^6$ as the Cartesian product of the intervals defined in the last column of \Cref{tab:parameters}.
+For the purpose of the sensitivity analysis, an element $\mu=\{T_\text{amb}, T_\text{bl}, h_\text{amb}, h_\text{bl}, E, k_\text{lens}\}\in\Dmu$ is called a \emph{parameter},
+and we denote $\bar{\mu}$ the baseline parameter, extracted from the corresponding column in \Cref{tab:parameters}.
+The dependence of the model concerning the parameter $\mu$ is emphasized by the notation $\Em_\text{L}(\mu)$ and $\Em_\text{NL}(\mu)$.
+
+

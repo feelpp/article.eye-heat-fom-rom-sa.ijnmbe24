@@ -1,0 +1,52 @@
+%!TeX root=../article.heat-fom-rom-sa.ijnmbe24.tex
+\section{Introduction}
+\label{sec:intro}
+
+The development of new technologies allows us to simulate more and more complex models in order to apprehend the world we live in.
+In this study, we will focus on a specific model: heat transfer inside the human eyeball.
+The temperature of the eyeball may have an impact on the distribution of drugs in the eye, partly due to the aging of the tissues \cite{BHANDARI2020286}.
+Hyperthermia is one of the most common treatments for eye tumors~\cite{li2010}, and understanding the mechanism of heat transfer could enhance the efficacy of ophthalmic treatments, such as laser therapy of the retina~\cite{Masters2004}.
+
+Heat transfer is also a key factor in the study of the effects of electromagnetic radiation on the eye, as pointed out in \cite{Hirata2007,doi:10.1142/S0219519409002936}.
+The model, originally introduced in \cite{Scott_1988} to examine temperature rises induced by exposure to infrared radiation,
+has been expanded upon in subsequent studies \cite{NG2006268, NG2007829, OOI2008252, li2010} using diverse methods for computing heat transfer.
+
+While invasive studies on animals have been conducted \cite{Purslow2005-ky}, non-invasive measurements on human subjects are scarce, complex to perform, and may yield inaccurate results \cite{ROSENBLUTH1977325}.
+Most studies focus on temperature measurements at the eye's surface \cite{MAPSTONE1968237, Efron1989OcularST} but report significant differences and identify several sources of uncertainty.
+Alternatively, numerical simulations can provide complementary information.
+However, in order to guarantee the reliability of such results, a rigorous validation step is required.
+
+The present contribution aims to contribute to these developments, by means of a mathematical and computational modeling approach, combined with a sensitivity analysis study performed thanks to a model reduction technique.
+The comparison with data available in the literature, obtained either by measurement on healthy subjects~\cite{Efron1989OcularST} or by other simulations \cite{NG2006268, NG2007829, li2010} will ensure the validity of the approach.
+
+In this model, numerous parameters, both biomechanical and geometrical, are involved.
+The present study concentrates on biomechanical parameters, in a large range that include potential extremal conditions.
+The variation of these parameters can have a significant impact on the results.
+To quantify their impact, we set up a framework to perform a forward uncertainty quantification study, complemented by a sensitivity analysis.
+Deterministic sensitivity analysis has already been performed in \cite{Scott_1988, NG2006268, NG2007829, li2010}, using various numerical methods.
+In this work, we reproduce and extend these results, to incorporate the effect of blood flow, as suggested for instance in \cite{Scott_1988}.
+We also run a global sensitivity analysis, that accounts for stochastic effects, and discriminate among different factors by means of Sobol's indices \cite{Sobol1993SensitivityEF}.
+The combination of deterministic and stochastic methods is an effective practice in the field of uncertainty quantification, and has been successfully used in recent various applications, such as \cite{DODIG201448} where the impact of uncertainties on the distribution of the electromagnetic field in the ocular tissue is studied;
+or more generally in the human head \cite{SUSNJARA20221,9522096}.
+To the best of our knowledge, this is the first time that such a study is performed in the context of bioheat transport in the tissues of the human eyeball.
+
+While Sobol's indices are effective in measuring parameter impact and interactions, the complexity and the significant computational time of our model are very challenging.
+To overcome this, we adopt the certified reduced basis method \cite{10.1115/1.1448332, Quarteroni2016} to obtain a reduced model, maintaining its 3D nature while significantly reducing computational demands.
+This method aligns with the paradigm observed in patient-specific mathematical models applied to biomedical problems,
+ensuring a comprehensive approach involving data integration, model derivation, numerical solving, validation, and uncertainty quantification, as seen in mature research fields like cardiovascular simulations or cerebral hemodynamics.
+In ophthalmology, a similar paradigm is imperative due to the richness and heterogeneity of available data, requiring innovative approaches for diagnosis and monitoring.
+
+More generally, the present work aims to contribute to the project Eye2Brain \cite{eye2brain},
+that has the ambitious objective to connect the cerebral and ocular environments and contribute in the long term to a better understanding of neurodegenerative diseases~\cite{Guidoboni2020-vr}.
+In this context, a model accounting for the combined effects of ocular blood flow and different ocular tissues was proposed in \cite{https://doi.org/10.1002/cnm.3791}0
+To incorporate inherent uncertainties and variability, an uncertainty propagation and sensitivity analysis on the component simulating the fluid flows in the eye was developed in \cite{MBE2021}.
+We here focus on the heat propagation phenomena, with the perspective of coupling the fluid and thermal contributions in future work.%\todo[est-ce qu'il faut citer ici le papier CMBE ? On le cite à la fin.]
+
+The structure of the paper is the following.
+After the introduction, we describe in \Cref{sec:model-phys} the geometrical model describing the human eyeball,
+the biophysical model governing the heat transfer, as well as the parameters involved in the equations.
+Next, we present in \Cref{sec:model-num} the methods developed to simulate the full and reduced models, including a step of verification and validation,
+to ensure that the mathematical and computational framework is correct.
+We report in \Cref{sec:uq} our results of the sensitivity analysis, using two methods: a deterministic one and a stochastic approach.
+All the methods are implemented in the open-source software Feel++ \cite{christophe_prud_homme_2023_8272196} and can be reproduced following guidelines described in \Cref{app:reproduce}.
+Finally, conclusions and perspectives are outlined in \Cref{sec:conclusion}.

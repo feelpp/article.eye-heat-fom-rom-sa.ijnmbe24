@@ -1,0 +1,222 @@
+%! TeX root=../article.heat-fom-rom-sa.ijnmbe24.tex
+\subsection{Numerical results}
+\label{sec:numerical-results}
+
+
+
+\input{tex/3.4-HF-validation.tex}
+
+
+\subsubsection{Linearized model}
+\label{sec:linearized-model}
+
+We now compare the results obtained after solving $\Em_\text{NL}(\bar{\mu})$ against $\Em_\text{L}(\bar{\mu})$.
+We denote the solution of the nonlinear model $\Em_\text{NL}(\bar{\mu})$ by $T_\text{NL}(\bar{\mu})$,
+and by $T_\text{L}(\bar{\mu})$ the solution of the linearized model $\Em_\text{L}(\bar{\mu})$,
+and compute the relative error:
+
+\begin{equation}
+    e_\text{lin}(\mu) = \dfrac{\norm{T_\text{NL}(\mu)-T_\text{L}(\mu)}{L^2(\Omega)}}{\norm{T_\text{NL}(\mu)}{L^2(\Omega)}}
+\end{equation}
+
+For $\mu=\bar{\mu}$, we get $e_\text{lin} = \pgfmathprintnumber[/pgf/number format/.cd, std, fixed zerofill, precision=4]{4.1760143214956727e-07}$.
+In \Cref{fig:diffLin}, we plot the difference between the two solutions $|T_\text{NL}(\x) - T_\text{L}(\x)|$ for $\x\in\Omega$.
+We notice that the difference is the largest on the front of the eye, where the boundary condition has been changed.
+Whereas at the back of the eye, the solutions are superposed.
+We also compute the maximal difference: $\pgfmathprintnumber[/pgf/number format/.cd,std,fixed zerofill,precision=4]{0.002166748046875}$~\unit{\kelvin}.
+Therefore, we consider in the sequel that the linearized model does not induce a significant error in the results.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=0.8]
+        \begin{axis}[
+            colorbar,
+            colormap/jet, % Choose the colormap you prefer
+            % axis equal image,
+            enlargelimits=false,
+            point meta max=0.002166748046875,
+            point meta min=0,
+            axis line style = {draw=none},
+            tick style = {draw=none},
+            xtick = \empty, ytick = \empty,
+            colorbar style={
+                ylabel = {$|T_\text{NL} - T_\text{L}|$},
+                height=0.7*\pgfkeysvalueof{/pgfplots/parent axis height},
+                at={(1.05,0.5)}, % Adjust the position to center vertically
+                anchor=west, % Adjust the anchor point
+            },
+            width=0.8\textwidth
+        ]
+            \addplot graphics [includegraphics cmd=\pgfimage, xmin=0, xmax=1, ymin=0, ymax=1] {fig/eye/results/linearization/normInf.png};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Difference of the temperature between the full model and the linearized model, computed on the mesh \texttt{M3} with $\P_2$ elements, and the baseline values $\bar{\mu}$ for the parameters.}
+    \label{fig:diffLin}
+\end{figure}
+
+
+
+
+
+\Cref{fig:hf:linear} displays the results of the simulation of the linear model $\Em_\text{L}(\mu)$, for three parameters $\mu$:
+$\bar{\mu}$ the baseline value parameters, $\mu_{\text{min}}$ (resp. $\mu_\text{max}$) where each component is the lowest (resp. highest) bound of its range of values.
+
+\begin{figure}
+    \centering
+    \def\mysize{0.3\textwidth}
+    \begin{tabular}{*{3}{c}}
+        $\bar{\mu}$ & $\mu_{\text{min}}$ & $\mu_{\text{max}}$\\
+
+        \includegraphics[width=\mysize]{fig/eye/results/toolbox/mubar-linear.png} &
+        \includegraphics[width=\mysize]{fig/eye/results/toolbox/mumin-linear.png} &
+        \includegraphics[width=\mysize]{fig/eye/results/toolbox/mumax-linear.png} \\
+
+        \multicolumn{3}{c}{\begin{tikzpicture}
+            \begin{axis}[
+                colorbar horizontal,
+                colormap={blues}{rgb255(0.0cm)=(5,97,254);
+                rgb255(0.023809523809523808cm)=(5,108,247);
+                rgb255(0.047619047619047616cm)=(5,119,239);
+                rgb255(0.07142857142857142cm)=(5,130,232);
+                rgb255(0.09523809523809523cm)=(5,139,222);
+                rgb255(0.11904761904761904cm)=(5,148,212);
+                rgb255(0.14285714285714285cm)=(5,157,202);
+                rgb255(0.16666666666666666cm)=(5,166,191);
+                rgb255(0.19047619047619047cm)=(5,174,179);
+                rgb255(0.21428571428571427cm)=(5,183,167);
+                rgb255(0.23809523809523808cm)=(5,193,153);
+                rgb255(0.2619047619047619cm)=(5,202,140);
+                rgb255(0.2857142857142857cm)=(5,211,126);
+                rgb255(0.30952380952380953cm)=(5,220,109);
+                rgb255(0.3333333333333333cm)=(5,228,91);
+                rgb255(0.35714285714285715cm)=(4,237,74);
+                rgb255(0.38095238095238093cm)=(69,242,39);
+                rgb255(0.40476190476190477cm)=(125,245,28);
+                rgb255(0.42857142857142855cm)=(164,249,11);
+                rgb255(0.4523809523809524cm)=(194,251,8);
+                rgb255(0.47619047619047616cm)=(224,252,5);
+                rgb255(0.5cm)=(254,254,3);
+                rgb255(0.5238095238095238cm)=(254,243,20);
+                rgb255(0.5476190476190477cm)=(254,232,37);
+                rgb255(0.5714285714285714cm)=(254,220,55);
+                rgb255(0.5952380952380952cm)=(254,208,55);
+                rgb255(0.6190476190476191cm)=(254,196,55);
+                rgb255(0.6428571428571429cm)=(254,183,55);
+                rgb255(0.6666666666666666cm)=(254,171,55);
+                rgb255(0.6904761904761905cm)=(254,159,55);
+                rgb255(0.7142857142857143cm)=(254,147,55);
+                rgb255(0.7380952380952381cm)=(254,132,55);
+                rgb255(0.7619047619047619cm)=(254,118,55);
+                rgb255(0.7857142857142857cm)=(254,104,55);
+                rgb255(0.8095238095238095cm)=(253,84,53);
+                rgb255(0.8333333333333334cm)=(251,66,48);
+                rgb255(0.8571428571428571cm)=(252,37,53);
+                rgb255(0.8809523809523809cm)=(242,29,64);
+                rgb255(0.9047619047619048cm)=(230,20,74);
+                rgb255(0.9285714285714286cm)=(218,10,84);
+                rgb255(0.9523809523809523cm)=(203,11,91);
+                rgb255(0.9761904761904762cm)=(189,11,98);
+                rgb255(1.0cm)=(174,12,105);},
+                colorbar style={
+                    width=0.6\textwidth,
+                    % xlabel={Colorbar Label},
+                    tick label style={font=\footnotesize},
+                },
+                ymin=0, ymax=1,
+                point meta min=302,
+                point meta max=310,
+                axis lines=none,
+            ]
+                \addplot [draw=none] coordinates {(302,0) (310,0)};
+            \end{axis}
+        \end{tikzpicture}}
+    \end{tabular}
+    \caption{Distribution of the temperature [\unit{\kelvin}] in the eyeball from the linear model $\Em_\text{L}(\mu)$.}
+    \label{fig:hf:linear}
+\end{figure}
+
+
+
+
+
+
+
+\subsubsection{Verifications of the reduced basis model}
+
+We compare the results of the reduced basis method with the output of the high fidelity FEM model.
+We generate a sample $\Xi_\test$ of 100 parameters in $\Dmu$.
+For $\mu\in\Xi_\test$, we compute on the one hand $T_O^\fem(\mu)$, the value of the temperature at point $O$ from the model $\Em_\text{L}(\mu)$,
+and on the other hand $T_O^{\rbm, N}(\mu)$, the value of the temperature for the reduced basis model, with a basis of size $N$.
+In \Cref{fig:fem-vs-rbm:error}, the value of the error $|T_O^\fem(\mu) - T_O^{\rbm, N}(\mu)|$ is plotted for each $\mu\in\Xi_\test$,
+for various reduced basis sizes $N$.
+Statistics on the error committed over the sample $\Xi_\test$ are displayed in \Cref{fig:fem-vs-rbm:stats},
+as well as the effectivity $\eta_N(\mu)$ in \Cref{fig:fem-vs-rbm:effectivity}.
+
+
+We observe that even for small values of $N$, the error on the output is remarkably small: an error of $10^{-4}$ is reached for $N=6$.
+On the other hand, we find that the convergence on the output is twice as fast as the convergence on the field,
+as predicted by the theoretical error estimate \cite[Eq. (36)]{10.1115/1.1448332}.
+
+Note that the anticipated error behavior aligns with theory when the output functional maintains continuity.
+In this work, we deviate from the standard case, attributed to the utilization of the Dirac functional in output computation used for pointwise evaluation.
+Nevertheless, a similar behavior is observed, and additional insights into this phenomenon will be provided in future work.
+
+
+\begin{figure}
+    \centering
+    \def\scl{1}
+    \subfigure[Error on RBM for various reduced basis sizes with error bound $\Delta_N^s(\mu)$ \label{fig:fem-vs-rbm:error}]{
+        \input{fig/eye/results/convergence/FEM-vs-RBM/convergence_errorbound.tikz}
+    }
+    \def\scl{0.88}
+    \subfigure[Convergence of the errors on the field and the output on point $O$, for $\mu\in\Xi_\test$, for various reduced basis sizes. The maximal, minimal, and mean values are represented.\label{fig:fem-vs-rbm:stats}]{
+        \input{fig/eye/results/convergence/FEM-vs-RBM/conv_max.tikz}
+    }
+    \subfigure[Stability of the effectivity $\eta_N^s(\mu) = \frac{\Delta_N^s(\mu)}{|T^\fem_O(\mu) - T^{\rbm, N}_O(\mu)|}$ and $\eta_N^\text{en}(\mu) = \frac{\Delta_N^\text{en}(\mu)}{\norm{T^\fem(\mu) - T^{\rbm, N}(\mu)}{\mu}}$ for $\mu\in\Xi_\test$, for various reduced basis sizes. The full red line represents the theoretical lower bound of the effectivity, \textrm{i.e.\ } 1.\label{fig:fem-vs-rbm:effectivity}]{
+        \input{fig/eye/results/convergence/FEM-vs-RBM/conv_effectivity.tikz}
+    }
+
+    \caption{Comparison of the temperature between the full order model and the reduced basis model, tested over a sample $\Xi_\test\subset\Dmu$ of 100 parameters.
+    }
+    \label{fig:fem-vs-rbm}
+\end{figure}
+
+
+
+\Cref{tab:time-execution} offers a comparative analysis of execution times for solving the heat transfer problem.
+We first discuss the execution times for the high-fidelity solution, encompassing both $\P_1$ and $\P_2$  finite-element discretizations.
+The measured time, denoted as $t_\text{exec}$, includes assembling and solving the problem.
+In contrast, we also evaluate the execution time of the online phase of our certified reliable reduced basis model.
+This comparison highlights a significant reduction in the time required to assemble and solve the problem using our advanced reduced basis approach.
+Importantly, this efficiency does not compromise accuracy; the results from the reduced basis model are effectively exact with respect to the high fidelity model.
+As anticipated in our earlier scalability analysis, we achieve remarkable computational gains with our model, reinforcing the benefits of our approach in both precision and performance.
+
+
+\begin{table}
+    \centering
+    \begin{tabular}{*{5}{c}}
+        \toprule
+                        & \multicolumn{3}{c}{Finite element resolution}                                    & Reduced model \\
+                        & \multicolumn{3}{c}{$T^\fem(\mu)$}                                                & $T^{\rbm, N}(\mu), \Delta_N(\mu)$ \\
+        \cmidrule(lr){2-4}
+        \cmidrule(lr){5-5}
+                        & $\P_1$               & $\P_2$ (\texttt{np=1})         &  $\P_2$ (\texttt{np=12})  &  \\
+        \midrule
+        Problem size    & $\N = 207~845$       & \multicolumn{2}{c}{$\N = 1~580~932$}                       & $N = 10$ \\
+        $t_\text{exec}$ & \qty{5.534}{\second} & \qty{62.432}{\second}          & \qty{10.76}{\second}      & \qty{2.88e-04}{\second}\\
+        speed-up        & 11.69                & 1                              & 5.80                      & \textbf{\qty[text-series-to-math]{2.17e5}{}}\\
+        \bottomrule
+    \end{tabular}
+    \caption{Times of execution, using mesh \texttt{M3} for high fidelity simulations.}
+    \label{tab:time-execution}
+\end{table}
+
+
+The reduced bases constructed for the various outputs of interest are generated with the greedy algorithm (\Cref{algo:Greedy}),
+using a maximal tolerance $\varepsilon_\tol=\pgfmathprintnumber{1e-6}$ and a maximal size for the basis $N = 20$.
+In practice, the tolerance is reached for $N = 10$ to 12.
+
+
+
+
+\input{tex/3.5-validation}

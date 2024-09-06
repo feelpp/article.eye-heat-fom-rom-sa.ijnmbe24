@@ -1,0 +1,227 @@
+% This file was created with tikzplotlib v0.10.1.
+\begin{tikzpicture}[scale=\chl]
+
+\definecolor{darkgray176}{RGB}{176,176,176}
+\definecolor{darkorange25512714}{RGB}{255,127,14}
+\definecolor{forestgreen4416044}{RGB}{44,160,44}
+\definecolor{lightgray204}{RGB}{204,204,204}
+\definecolor{steelblue31119180}{RGB}{31,119,180}
+
+\begin{axis}[
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=lightgray204, nodes={scale=0.7, transform shape}},
+tick align=outside,
+tick pos=left,
+% title={T\_amb},
+x grid style={darkgray176},
+xlabel={$T_\text{amb}$ [\unit{\kelvin}]},
+xmajorgrids,
+xmin=265.43, xmax=320.87,
+xtick style={color=black},
+y grid style={darkgray176},
+% ylabel={PDF},
+% ymajorticks=false,
+ymajorgrids,
+ymin=-0.0025, ymax=0.0525,
+ytick style={color=black}
+]
+\addplot [dashed, red, fill=red, fill opacity=0.25]
+table {%
+267.95 0
+268.34375 0
+268.7375 0
+269.13125 0
+269.525 0
+269.91875 0
+270.3125 0
+270.70625 0
+271.1 0
+271.49375 0
+271.8875 0
+272.28125 0
+272.675 0
+273.06875 0
+273.4625 0
+273.85625 0
+274.25 0
+274.64375 0
+275.0375 0
+275.43125 0
+275.825 0
+276.21875 0
+276.6125 0
+277.00625 0
+277.4 0
+277.79375 0
+278.1875 0
+278.58125 0
+278.975 0
+279.36875 0
+279.7625 0
+280.15625 0
+280.55 0
+280.94375 0
+281.3375 0
+281.73125 0
+282.125 0
+282.51875 0
+282.9125 0
+283.30625 0.05
+283.7 0.05
+284.09375 0.05
+284.4875 0.05
+284.88125 0.05
+285.275 0.05
+285.66875 0.05
+286.0625 0.05
+286.45625 0.05
+286.85 0.05
+287.24375 0.05
+287.6375 0.05
+288.03125 0.05
+288.425 0.05
+288.81875 0.05
+289.2125 0.05
+289.60625 0.05
+290 0.05
+290.39375 0.05
+290.7875 0.05
+291.18125 0.05
+291.575 0.05
+291.96875 0.05
+292.3625 0.05
+292.75625 0.05
+293.15 0.05
+293.54375 0.05
+293.9375 0.05
+294.33125 0.05
+294.725 0.05
+295.11875 0.05
+295.5125 0.05
+295.90625 0.05
+296.3 0.05
+296.69375 0.05
+297.0875 0.05
+297.48125 0.05
+297.875 0.05
+298.26875 0.05
+298.6625 0.05
+299.05625 0.05
+299.45 0.05
+299.84375 0.05
+300.2375 0.05
+300.63125 0.05
+301.025 0.05
+301.41875 0.05
+301.8125 0.05
+302.20625 0.05
+302.6 0.05
+302.99375 0.05
+303.3875 0
+303.78125 0
+304.175 0
+304.56875 0
+304.9625 0
+305.35625 0
+305.75 0
+306.14375 0
+306.5375 0
+306.93125 0
+307.325 0
+307.71875 0
+308.1125 0
+308.50625 0
+308.9 0
+309.29375 0
+309.6875 0
+310.08125 0
+310.475 0
+310.86875 0
+311.2625 0
+311.65625 0
+312.05 0
+312.44375 0
+312.8375 0
+313.23125 0
+313.625 0
+314.01875 0
+314.4125 0
+314.80625 0
+315.2 0
+315.59375 0
+315.9875 0
+316.38125 0
+316.775 0
+317.16875 0
+317.5625 0
+317.95625 0
+318.35 0
+};
+\addlegendentry{PDF}
+\addplot [dashed, color=black!60, line width=2pt]
+table {%
+294 -0.0025
+294 0.0525
+};
+\addlegendentry{Baseline}
+\addplot [semithick, colorLi]
+table {%
+273 -0.0025
+273 0.0525
+};
+\addlegendentry{\cite{li2010}}
+\addplot [semithick, colorLi, forget plot]
+table {%
+278 -0.0025
+278 0.0525
+};
+\addplot [semithick, colorLi, forget plot]
+table {%
+283 -0.0025
+283 0.0525
+};
+\addplot [semithick, colorLi, forget plot]
+table {%
+303 -0.0025
+303 0.0525
+};
+\addplot [semithick, colorLi, forget plot]
+table {%
+308 -0.0025
+308 0.0525
+};
+\addplot [semithick, colorOoi]
+table {%
+293.15 -0.0025
+293.15 0.0525
+};
+\addlegendentry{\cite{NG2006268} \& \cite{Scott_1988}}
+\addplot [semithick, colorOoi, forget plot]
+table {%
+298.15 -0.0025
+298.15 0.0525
+};
+\addplot [semithick, colorOoi, forget plot]
+table {%
+303.15 -0.0025
+303.15 0.0525
+};
+% \addplot [semithick, colorScott]
+% table {%
+% 293.15 -0.0025
+% 293.15 0.0525
+% };
+% \addlegendentry{\cite{Scott_1988}}
+% \addplot [semithick, colorScott, forget plot]
+% table {%
+% 298.15 -0.0025
+% 298.15 0.0525
+% };
+% \addplot [semithick, colorScott, forget plot]
+% table {%
+% 303.15 -0.0025
+% 303.15 0.0525
+% };
+\end{axis}
+
+\end{tikzpicture}

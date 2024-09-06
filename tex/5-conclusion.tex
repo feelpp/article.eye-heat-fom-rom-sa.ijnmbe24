@@ -1,0 +1,21 @@
+%!TeX root=../article.heat-fom-rom-sa.ijnmbe24.tex
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have successfully developed a numerical model that accurately simulates heat transfer within the complex three-dimensional structure of the human eyeball,
+enabling us to calculate the temperature distribution across various ocular tissues.
+This model has undergone rigorous validation against both experimental data and numerical results from existing literature.
+A key advancement in our study is the implementation of a certified reduced basis method.
+This method significantly accelerates the simulations of our complex model while maintaining high accuracy,
+making it highly efficient for many-queries computations essential in uncertainty quantification studies.
+Our sensitivity analysis pinpointed four main physiological parameters as most influential in affecting the results:
+blood temperature, ambient temperature, the ambient air convection coefficient, and the evaporation rate.
+These findings build upon and enrich prior studies, such as those highlighted in \cite{Scott_1988,NG2006268,li2010},
+underscoring the vital role of blood flow characteristics and environmental conditions, particularly in the inner ocular tissues.
+Additionally, through Sobol' indices analysis, we identified the significant impact of parameter interactions, particularly those related to ambient temperature.
+From a clinical standpoint, our insights into heat transport in the human eye could inform studies on the effects of electromagnetic wave radiation,
+as explored in \cite{Hirata2007,NG2007829,doi:10.1142/S0219519409002936} and related references.
+As a next step, we plan to couple the heat transfer model with models describing the aqueous humor flow, as in \cite{OOI2008252,10.1007/978-3-030-63591-6_45}.
+This work is crucial to understand the formation of Krukenberg's spindle, to better understand the pathophysiology of pigment dispersion syndrome and to enhance drug delivery efficiency in the anterior chamber~\cite{Wang2016,BHANDARI2020286}. Our preliminary findings in this direction can be found in~\cite{saigre:hal-04558924}.
+Ultimately, our work, in conjunction with previous initiatives such as the Ocular Mathematical Virtual Simulator \cite{https://doi.org/10.1002/cnm.3791},
+lays the groundwork for a comprehensive, multi-physics, multiscale framework in ophthalmology, tailored for personalized medical applications.

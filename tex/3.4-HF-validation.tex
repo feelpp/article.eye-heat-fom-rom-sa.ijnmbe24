@@ -1,0 +1,82 @@
+%!TeX root=../article.heat-fom-rom-sa.ijnmbe24.tex
+\subsubsection{Mesh convergence}
+\label{sec:verify:mesh-convergence}
+
+
+In \Cref{sec:model-geo}, we detailed the geometry of the eyeball, derived from computer-aided design (CAD) data.
+As illustrated in \Cref{fig:geo-eye}, certain regions exhibit greater complexity than others.
+For instance, the lamina cribrosa is notably thinner, while the iris presents a less uniform structure.
+Achieving an effective mesh requires a well-distributed arrangement of elements.
+This is attainable through the application of a specialized meshing algorithm designed to tailor the mesh according to the geometric intricacies.
+Utilizing the MMG library \cite{mmg}, we have generated a family of meshes with varying levels of refinement.
+These meshes are used to our subsequent simulation processes.
+
+
+\Cref{tab:mesh} displays the characteristics of the meshes, such as their characteristic size $h$ and the number of degrees of freedom (nDof) for both $\P_1$ and $\P_2$ finite element discretizations.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{*{4}{c}}%
+    \toprule
+    \textbf{Mesh} & $h$ & \textbf{nDof $\P_1$} & \textbf{nDof $\P_2$}\\
+    \midrule
+    \csvreader[head to column names, late after line=\\]{fig/eye/dat/meshInformation3D.csv}{}{
+        \texttt{\mesh} &
+        \pgfmathprintnumber{\hAvg} &
+        \pgfmathprintnumber{\nDofPUn} &
+        \pgfmathprintnumber{\nDofPDeux}
+    }
+    \bottomrule
+\end{tabular}
+\end{center}
+\caption{Characteristics of the meshes.}
+\label{tab:mesh}
+\end{table}
+
+In this section, we detail the outcomes of our mesh convergence analysis.
+This analysis involves solving the given problem across various mesh configurations and subsequently comparing the resultant data.
+To conduct this study, we first solve the model denoted as  $\Em_\text{NL}(\bar{\mu})$.
+Following this, we compute the output $T^\fem_{\text{NL}, O}$ representing the temperature at the cornea's center as determined by the high-fidelity model.
+The primary objective of this analysis is to ascertain whether the obtained temperature values demonstrate convergence towards a consistent value.
+\Cref{fig:conv-output} illustrates the results of our mesh convergence study, clearly indicating a pattern of satisfactory convergence.
+We select for further comparisons the values obtained for \texttt{M3} and for $\P_2$.
+
+
+
+
+\begin{figure}
+    \centering
+    \input{fig/eye/results/convergence/conv_output_nl.tex}
+    \caption{Temperature at the center of the cornea computed with the high-fidelity model $\Em_\text{NL}(\bar{\mu})$, depending on the level of refinement of the mesh.}
+    \label{fig:conv-output}
+\end{figure}
+
+
+
+
+\subsubsection{Scalability}
+
+In this section, we explore the scalability of our computational framework.
+This involves measuring the time required to solve the model in relation to the number of MPI parallel processes utilized.
+The time measured pertains to the duration necessary for assembling the algebraic system and solving the problem, as per \Cref{algo:hf}.
+Our experiments utilized mesh \texttt{M3}, with both $\P_1$ and  $\P_2$ discretizations.
+The results, presented in \Cref{fig:scalability}, demonstrate satisfactory scalability:
+the execution time decreases as the number of parallel processes increases.
+However, we observed that beyond 12 processes, the reduction in execution time becomes less significant.
+Consequently, for optimal efficiency, we have selected 12 processes for our subsequent analyses.
+This study sets the stage for a subsequent comparison with a reduced-order model, which employs a reduced basis with reliable, certified output bounds derived from the high-fidelity solutions.
+This comparison aims to highlight that, while parallel computing can accelerate the high-fidelity computation, the reduced-order approach offers even more substantial computational gains.
+
+
+
+\begin{figure}
+    \centering
+    \def\scl{0.95}
+    \input{fig/eye/results/convergence/scalability.tikz}
+    \input{fig/eye/results/convergence/scalability_speedup.tikz}
+    \caption{Time of execution to run $\Em_\text{L}^\N(\bar{\mu})$ and corresponding speed-up, for an increasing number of parallel processes.
+    Simulations are performed on the \texttt{M3}.}
+    \label{fig:scalability}
+\end{figure}
+
+

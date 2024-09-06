@@ -1,0 +1,69 @@
+\path [draw=steelblue31119180, semithick]
+(axis cs:0,3.98386e-05)
+--(axis cs:0,4.54636e-05);
+
+\path [draw=steelblue31119180, semithick]
+(axis cs:1,0.00149361)
+--(axis cs:1,0.00155326);
+
+\path [draw=steelblue31119180, semithick]
+(axis cs:2,0.996277)
+--(axis cs:2,0.996495);
+
+\path [draw=steelblue31119180, semithick]
+(axis cs:3,0.00105368)
+--(axis cs:3,0.00120598);
+
+\path [draw=steelblue31119180, semithick]
+(axis cs:4,0.000674723)
+--(axis cs:4,0.000714091);
+
+\path [draw=steelblue31119180, semithick]
+(axis cs:5,6.52621e-07)
+--(axis cs:5,1.16226e-06);
+
+\path [draw=darkorange25512714, semithick]
+(axis cs:0.2,4.25001e-05)
+--(axis cs:0.2,4.75355e-05);
+
+\path [draw=darkorange25512714, semithick]
+(axis cs:1.2,0.00167908)
+--(axis cs:1.2,0.00180157);
+
+\path [draw=darkorange25512714, semithick]
+(axis cs:2.2,0.996287)
+--(axis cs:2.2,0.996503);
+
+\path [draw=darkorange25512714, semithick]
+(axis cs:3.2,0.00121695)
+--(axis cs:3.2,0.00139161);
+
+\path [draw=darkorange25512714, semithick]
+(axis cs:4.2,0.000778033)
+--(axis cs:4.2,0.00084167);
+
+\path [draw=darkorange25512714, semithick]
+(axis cs:5.2,7.42304e-07)
+--(axis cs:5.2,1.64504e-06);
+
+\addplot [semithick, steelblue31119180, mark=\mymarker, mark size=3, mark options={solid}, only marks]
+table {%
+0 4.23679e-05
+1 0.00151396
+2 0.996376
+3 0.00111648
+4 0.000694775
+5 8.83803e-07
+};
+\addlegendentry{First order}
+\addplot [semithick, darkorange25512714, mark=\mymarker, mark size=3, mark options={solid}, only marks]
+table {%
+0.2 4.47307e-05
+1.2 0.00171604
+2.2 0.996386
+3.2 0.00130552
+4.2 0.000809951
+5.2 1.10717e-06
+};
+\addlegendentry{Total order}
+

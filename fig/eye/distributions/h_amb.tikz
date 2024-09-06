@@ -1,0 +1,115 @@
+% This file was created with tikzplotlib v0.10.1.
+\begin{tikzpicture}[scale=\chl]
+
+\definecolor{darkgray176}{RGB}{176,176,176}
+\definecolor{darkorange25512714}{RGB}{255,127,14}
+\definecolor{forestgreen4416044}{RGB}{44,160,44}
+\definecolor{lightgray204}{RGB}{204,204,204}
+\definecolor{steelblue31119180}{RGB}{31,119,180}
+
+\begin{axis}[
+legend cell align={left},
+legend style={
+  fill opacity=0.8,
+  draw opacity=1,
+  text opacity=1,
+  at={(0.99,0.99)},
+  anchor=north east,
+  draw=lightgray204,
+  nodes={scale=0.8, transform shape}
+},
+tick align=outside,
+tick pos=left,
+% title={h\_amb},
+x grid style={darkgray176},
+xlabel={$h_\text{amb}$ [\unit{\watt.\meter^{-2}.\kelvin^{-1}}]},
+xmajorgrids,
+xmin=-10, xmax=110,
+xtick style={color=black},
+y grid style={darkgray176},
+% ymajorticks=false,
+% ylabel={PDF},
+% ymajorgrids,
+ymin=-0.00542153685454793, ymax=0.113852273945507,
+ytick style={color=black}
+]
+\addplot [dashed, red, fill=red, fill opacity=0.25]
+table[x=x, y=pdf, col sep=comma] {fig/eye/distributions/h_amb_pdf.csv};
+\addlegendentry{PDF}
+\addplot [dashed, color=black!60, line width=2pt]
+table {%
+9.99999999999999 -0.00542153685454794
+9.99999999999999 0.113852273945507
+};
+\addlegendentry{Baseline}
+\addplot [semithick, colorLi]
+table {%
+15 -0.00542153685454794
+15 0.113852273945507
+};
+\addlegendentry{\cite{li2010}}
+\addplot [semithick, colorLi, forget plot]
+table {%
+30 -0.00542153685454794
+30 0.113852273945507
+};
+\addplot [semithick, colorLi, forget plot]
+table {%
+50 -0.00542153685454794
+50 0.113852273945507
+};
+\addplot [semithick, colorLi, forget plot]
+table {%
+80 -0.00542153685454794
+80 0.113852273945507
+};
+\addplot [semithick, colorLi, forget plot]
+table {%
+100 -0.00542153685454794
+100 0.113852273945507
+};
+\addplot [semithick, colorOoi]
+table {%
+8 -0.00542153685454794
+8 0.113852273945507
+};
+\addlegendentry{\cite{NG2006268}}
+\addplot [semithick, colorOoi, forget plot]
+table {%
+9.99999999999999 -0.00542153685454794
+9.99999999999999 0.113852273945507
+};
+\addplot [semithick, colorOoi, forget plot]
+table {%
+15 -0.00542153685454794
+15 0.113852273945507
+};
+\addplot [semithick, colorOoi, forget plot]
+table {%
+100 -0.00542153685454794
+100 0.113852273945507
+};
+\addplot [semithick, colorScott]
+table {%
+8 -0.00542153685454794
+8 0.113852273945507
+};
+\addlegendentry{\cite{Scott_1988}}
+\addplot [semithick, colorScott, forget plot]
+table {%
+9.99999999999999 -0.00542153685454794
+9.99999999999999 0.113852273945507
+};
+\addplot [semithick, colorScott, forget plot]
+table {%
+12 -0.00542153685454794
+12 0.113852273945507
+};
+\addplot [semithick, colorScott, forget plot]
+table {%
+15 -0.00542153685454794
+15 0.113852273945507
+};
+\end{axis}
+
+\end{tikzpicture}

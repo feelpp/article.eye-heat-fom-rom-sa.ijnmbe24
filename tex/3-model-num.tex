@@ -1,0 +1,240 @@
+%!TeX root=../article.heat-fom-rom-sa.ijnmbe24.tex
+\section{Mathematical and computational framework}
+\label{sec:model-num}
+
+
+This section outlines the mathematical and computational framework, including the variational formulation derivation, the high fidelity finite element method (FEM) resolution technique, and the construction of reduced basis metamodel.
+It is followed by the presentation of numerical results, verification and validation steps.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{tex/3.1-variational-form}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph*{High fidelity FEM resolution}
+
+We present here the discretization approach and briefly describe the in-house computational framework we developed.
+
+In the sequel, we set $V:= H^1(\Omega)$ and focus on \emph{outputs of interest}, $s_k(\mu)$, for $k\in\llbracket 1, n_\text{output}\rrbracket$ given by the formula $s_k(\mu) = \ell_k(u(\mu); \mu)$,
+where $\ell$ is a bounded linear form and $u(\mu)$ is the solution of \Cref{eq:variational-formulation}.
+
+Denote by $V_h\subset V$ the approximate functional space of dimension $\N$, $h$ standing for the discretization of the space, for a finite element approach.
+The previous problem is equivalent to:
+\begin{subequations}
+\begin{align}
+    \mat{A}_L(\mu) \vct{T}^\fem(\mu) &= \vct{f}_L(\mu)\\
+    s_k(\mu) &= \vct{L}_k(\mu)^T \vct{T}^\fem(\mu)
+\end{align}
+\label{eq:fe-syst}
+\end{subequations}
+with $\mat{A}(\mu)\in\R^{\N\times\N}$, $\vct{f}(\mu)\in\R^{\N}$, $\vct{L}_k(\mu)\in\R^{\N}$, and $k$ is the index of the output.
+The vector $\vct{T}^\fem(\mu)\in V_h \simeq\R^{\N}$ is the solution, and $s(\mu)\in\R$ is the computed output.
+
+More precisely, the steps run during resolution are given in \Cref{algo:hf}.
+
+\begin{algorithm}
+    \KwIn{$\mu\in\Dmu$}
+    Construct $\mat{A}(\mu)$, $\vct{f}(\mu)$, $\vct{L}_k(\mu)$\;
+    Solve $\mat{A}(\mu)\vct{T}^\fem(\mu) = \vct{f}(\mu)$\;
+    Compute outputs $s_k(\mu) = \vct{L}_k(\mu)^T\vct{T}^\fem(\mu)$\;
+    \KwOut{Numerical solution $\vct{T}^\fem(\mu)$ and outputs $s_k(\mu)$}
+    \caption{High fidelity resolution.}
+    \label{algo:hf}
+\end{algorithm}
+
+
+To establish numerical results, we implement \Cref{algo:hf} in the framework of the open-source library \fpp{} \cite{christophe_prud_homme_2023_8272196}\footnote{Soure code: \url{https://github.com/feelpp/feelpp/}},
+and specifically the \textsf{heat} toolbox\footnote{See documentation: \url{https://docs.feelpp.org/toolboxes/latest/heat/toolbox.html}}
+where both models $\Em_\text{NL}(\mu)$ and $\Em_\text{L}(\mu)$ can be simulated, with both $\P_1$ and $\P_2$ piece-wise polynomials \cite{Ern2021-mi}.
+The solution strategy uses conjugate gradient method solver preconditionned by an algrebraic multigrid method; in the context of $\Em_\text{NL}$, non-linear iterations are required.
+
+
+All the results presented in this document are available and can be reproduced, refer to \Cref{app:reproduce} for more details.
+All subsequent computational simulations are performed on the same machine equipped with the following hardware: \texttt{AMD EPYC 7552 48-Core Processor}.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Reduced order modeling with the reduced basis method}
+\label{sec:rbm}
+
+We now introduce the reduced basis metamodel \cite{10.1115/1.1448332, Rozza2008-hx, Quarteroni2016}.
+The goal of the reduced basis method (RBM) is to approximate the solution of the parametrized-PDE described by Equations (\ref{eq:model:heat})-(\ref{eq:neumann-lin})-(\ref{eq:model:robin})-(\ref{eq:model:interface}).
+For complex geometries and biomechanical problems, such as the one described in \Cref{sec:model-geo}, numerical solving has a prohibitive cost, especially for studies of uncertainty quantification, requiring the resolution of the system for many parameters.
+We briefly present the implemented strategy, following \cite{10.1115/1.1448332}.
+
+Recall that $\vct{T}^\fem(\mu)\in V_h$ can be written as $\vct{T}^\fem(\mu)=\displaystyle\sum_{n=1}^\N T^\fem_n(\mu)\phi_{h,n}$, where $(\phi_{h,n})_{n\in\llbracket 1,\N\rrbracket}$ is a basis of $V_h$.
+
+The main idea of RBM is to construct a low-dimension subspace $V_N\subset V_h$, of dimension $N$ with $N\ll \N$, such that the approximation error is small:
+$\Vert \vct{T}^\fem(\mu) - \vct{T}^\rbm(\mu)\Vert \leqslant \varepsilon_\tol$, while the procedure to compute $\vct{T}^\rbm(\mu)$ is efficient and stable.
+
+The reduced equivalent of the variational form \Cref{eq:variational-formulation} is:
+given $\mu\in\Dmu$, find $\vct{T}^{\rbm, N}(\mu)\in V_N$ such that:
+\begin{equation}
+    a_L(\vct{T}^{\rbm, N}(\mu), \vct{v}; \mu) = f_L(\vct{v}; \mu) \quad \forall \vct{v}\in V_N
+    \label{eq:pb-var-rbm-reduced}
+\end{equation}
+
+
+The reduced space $V_N$ is constructed from \emph{snapshots}, which are high fidelity solutions.
+The RBM consists of two main phases:
+(i) the \emph{offline stage}, where the reduced space is constructed, and
+(ii) the \emph{online stage}, where the reduced space is used to compute the solution of the system.
+The first step is performed only once and can be costly, while the second step is performed for each parameter $\mu$ and is efficient.
+
+During the offline stage, snapshots are computed for a set of parameters $\{\mu_i\}_{i=1}^N$.
+This gives a family of vectors $\big(\vct{T}^\fem(\mu_i)\big)_{1\leqslant i\leqslant N}\subset V_h$.
+The reduced space is defined by $V_N := \text{span}\left(\vct{\xi}_i\right)$, where $(\vct{\xi}_i)_{1\leqslant i\leqslant N}$ is an orthonormal family of vectors, obtained by the Gram-Schmidt process applied to the snapshots $\{\vct{T}^\fem(\mu_i)\}_{1\leqslant i\leqslant N}$.
+We define the snapshots matrix $\mat{Z}_N = \left[\vct{\xi}_1,\cdots,\vct{\xi}_N\right]\in \R^{\N,N}$.
+
+The snapshots can be selected in different ways.
+The first approach is to select the snapshots randomly in the parameter space, but this could lead to a poor approximation of the solution \cite{buffa2012}.
+Another approach is to select the snapshots greedily, by selecting the parameter that maximizes the error between the reduced solution and the high fidelity solution, see \Cref{sec:generation-reduced-basis}.
+
+
+Setting $\mat{A}_N(\mu) = \mat{Z}_N^T \mat{A}_L(\mu) \mat{Z}_N \in \R^{N\times N}$ and $\vct{f}_N(\mu) = \mat{Z}_N^T \vct{f}_L(\mu) \in \R^N$, we obtain the reduced algebraic system of size $N$:
+\begin{subequations}
+\begin{align}
+    \mat{A}_N(\mu) \vct{T}^{\rbm,N}(\mu) &= \vct{f}_N(\mu)\label{eq:fe-syst-reduced:pb}\\
+    s_{k,N}(\mu) &= \vct{L}_{k,N}(\mu)^T \vct{T}^{\rbm,N}(\mu)
+\end{align}
+\label{eq:fe-syst-reduced}
+\end{subequations}
+the same process applying for the outputs $\vct{L}_k$.
+
+
+
+
+Thanks to the linearity of the model $\Em_\text{L}(\mu)$, we can further write the following \emph{affine decomposition}:
+for $T, v \in V$,
+
+\begin{subequations}
+\begin{equation}
+    a_L(T, v; \mu) = \sum_{q=1}^{Q_a} \beta_A^q(\mu) a^q_L(T, v)
+\end{equation}
+with
+\begin{align}
+    \beta_A^1(\mu) &= \prm{k_\text{lens}} & a^1_L(T, v) &= \int_{\Omega_\text{lens}}\nabla T\cdot\nabla v\d x\\
+    \beta_A^2(\mu) &= \prm{h_\text{amb}}  & a^2_L(T, v) &= \int_{\Gamma_\text{amb}} Tv\d\sigma\\
+    \beta_A^3(\mu) &= \prm{h_\text{bl}}   & a^3_L(T, v) &= \int_{\Gamma_\text{body}} Tv\d\sigma\\
+    \beta_A^4(\mu) &= 1                   & a^4_L(T, v) &= \int_{\Gamma_\text{amb}}h_\text{r} Tv\d\sigma + \sum_{i\neq\text{lens}}k_i\int_{\Omega_i}\nabla T\cdot\nabla v\d x
+\end{align}
+\label{eq:decomposition-a}
+\end{subequations}
+and
+\begin{subequations}
+\begin{align}
+    f_L(v; \mu) = \sum_{p=1}^{Q_f} \beta_F^p(\mu) f^p_L(v)
+\end{align}
+with
+\begin{align}
+    \beta_F^1(\mu) &= \prm{h_\text{amb}T_\text{amb}} + h_\text{r}\prm{T_\text{amb}} - \prm{E} & f^1(v) &= \int_{\Gamma_\text{amb}} v\d\sigma\\
+    \beta_F^2(\mu) &= \prm{h_\text{bl}T_\text{bl}} & f^2(v) &= \int_{\Gamma_\text{body}}v\d\sigma
+\end{align}
+\label{eq:decomposition-f}
+\end{subequations}
+where $Q_a = 4$ and $Q_f = 2$.
+We furthermore define the algebraic matrices $\mat{A}_L^q\in\R^{\N\times\N}$ and vectors $\vct{f}_L^p\in\R^{\N}$,
+so the following equality holds:
+\begin{equation}
+    \mat{A}_L(\mu) = \sum_{q=1}^{Q_a} \beta_A^q(\mu) \mat{A}_L^q, \quad
+    \vct{f}_L(\mu) = \sum_{p=1}^{Q_f} \beta_F^p(\mu) \vct{f}_L^p
+\end{equation}
+
+
+
+
+From this decomposition and \Cref{eq:fe-syst-reduced:pb}, we obtain the following algebraic system:
+\begin{equation}
+    \mat{A}_N(\mu) = \sum_{q=1}^{Q_a} \beta_A^q(\mu)\underbrace{\mat{Z}_N^T \mat{A}_L^q\mat{Z}_N}_{\mat{A}^q_N}
+    \label{eq:fe-syst-reduced:matrices}
+\end{equation}
+
+We set $\mat{A}_N^q := \mat{Z}_N^T \mat{A}_L^q\mat{Z}_N \in \R^{N\times N}$.
+The matrices $\mat{A}_N^q\in\R^{N\times N}$ are independent of $\mu$ and can be computed only once and stored.
+The same process applies to $\vct{f}_N(\mu)$ and $\vct{L}_{k,N}(\mu)$:
+
+\begin{equation}
+    \vct{f}_N(\mu) = \sum_{q=1}^{Q_f} \beta_F^q(\mu) \vct{f}^q_N, \quad
+    \vct{L}_{k,N}(\mu) = \sum_{q=1}^{Q_\ell} \beta_\ell^q(\mu) \vct{L}^q_{k,N}
+\end{equation}
+For the outputs we study in this work, the decomposition of $\vct{L}_{k, N}$ has only one term since the output does not depend on the parameters.
+
+
+This decomposition allows implementing an \emph{offline/online procedure}.
+During the \emph{offline phase}, the basis of $V_N$ is constructed from the snapshots, as well as the matrices $\mat{A}_N^q$, $\vct{f}_N^q$, and $\vct{L}_{k, N}^q$ are computed and stored.
+More details about this construction are given in \Cref{sec:generation-reduced-basis}.
+This procedure is costly and is performed only once for the problem.
+During the \emph{online phase}, the reduced system \Cref{eq:fe-syst-reduced} is solved for any parameter $\mu$.
+The entire procedure is synthesized in \Cref{algo:offline-online}.
+
+During the offline stage, two approaches can be used to select the size of the reduced basis $N$:
+(i) an approach where we set the size of the reduced basis $N$ to a fixed value, and
+(ii) an approach where we set a tolerance $\varepsilon_\tol$ on the error committed on the output.
+The second approach is more interesting since it allows having a reduced basis of size $N$ that is adapted to the desired tolerance.
+
+
+\begin{algorithm}
+    \SetKwProg{Fn}{}{:}{}
+    \Fn{Offline procedure}{
+        \KwIn{Parameters $\mu_1, \cdots, \mu_N\in\Dmu$}
+        Compute snapshots $\vct{T}^\fem(\mu_1), \cdots, \vct{T}^\fem(\mu_N)$\;
+        Construct $\mat{Z}_N \gets \left[\vct{\xi_1}, \cdots, \vct{\xi_N}\right]$ (orthonormal)\;
+        Construct the reduced matrices $(\mat{A}_N^q)_{1\leqslant q\leqslant Q_a}$, $(\vct{F}_N^p)_{1\leqslant p\leqslant Q_f}$, $(\vct{L}_{k, N})_{1\leqslant k\leqslant n_\text{output}}$\;
+        \KwOut{Reduced basis and reduced matrices, stored.}
+    }
+
+    \Fn{Online procedure}{
+        \KwIn{$\mu\in\Dmu$}
+        Assemble $\mat{A}_N(\mu)$, $\vct{F}_N(\mu)$, $\vct{L}_{k, N}(\mu)$ using the saved matrices and the affine decomposition\;
+        Solve $\mat{A}_N(\mu)\vct{u}_N(\mu) = \vct{F}_N(\mu)$\;
+        Compute the output $s_{k,N}(\mu) = \vct{L}_{k, N}(\mu)^T\vct{u}_N(\mu)$\;
+        \KwOut{$\vct{u}_N(\mu), s_{k,N}(\mu)$.}
+    }
+
+    \caption{Offline and online stages of the RBM.}
+    \label{algo:offline-online}
+\end{algorithm}
+
+
+
+
+\input{tex/3.2-error-bound}
+
+
+
+\subsubsection{Generation of the reduced basis}
+\label{sec:generation-reduced-basis}
+
+The a posteriori error estimator introduced earlier provides an efficient criterion to select the desired dimension of the reduced space $N$, in the offline phase.
+Given a fixed tolerance $\varepsilon_\tol$, we can greedily select the greatest $N$ such that the error bound is smaller than the tolerance.
+In this section, we describe an algorithm to generate the reduced basis.
+
+For this algorithm, a large set of parameters $\Xi_\train\subset \Dmu$ is required.
+This set is called the \emph{training set}, and is generated log-randomly.
+A first snapshot is computed for a given parameter $\mu_0\in\Dmu$.
+To get the $N+1$-th snapshot to be inserted in the basis, we select the parameter $\mu^\star$ that maximizes the error bound $\Delta_N(\mu)$, for $\mu\in\Xi_\train$.
+This step is performed until a selected tolerance for the maximal error bound is reached.
+The greedy algorithm is presented in \Cref{algo:Greedy}.
+
+\begin{algorithm}
+    \caption{Greedy algorithm to construct the reduced basis.}
+    \label{algo:Greedy}
+    \KwIn{$\mu_0\in \Dmu$, $\Xi_\text{train}\subset \Dmu$ and $\varepsilon_\tol>0$}
+    $S\gets [\mu_0]$\;
+    \While {$\Delta_N^{\max} > \varepsilon_\tol$}{
+        $\mu^\star\leftarrow \displaystyle\argmax_{\mu\in\Xi_\text{train}}\Delta_N(\mu)$ (and $\displaystyle\Delta_N^\text{max}\leftarrow \max_{\mu\in\Xi_\text{train}}\Delta_N(\mu)$)\;
+        % $\vct{u}(\mu^\star)\gets$ FE solution, using $S$ as generating sample\;
+        $V_{N+1} \gets \left\{\vct{\xi} = \vct{T}^\fem(\mu^\star)\right\} \cup V_{N}$\;
+        Append $\mu^\star$ to $S$\;
+        $N \gets N+1$\;
+    }
+    \KwOut{Sample $S$, reduced basis $V_N$}
+\end{algorithm}
+
+
+\input{tex/3.3-numerical-results}

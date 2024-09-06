@@ -1,0 +1,48 @@
+% This file was created with tikzplotlib v0.10.1.
+\pgfplotstableread[col sep=comma]{\currfiledir/data/convergence_error_O.csv}\errors
+% \pgfplotstablecreatecol[linear regression={y=outputMean}]{regressionO}{\errors}
+% \xdef\slopeO{\pgfplotstableregressiona}
+% \pgfplotstablecreatecol[linear regression={y=fieldMean}]{regressionField}{\errors}
+% \xdef\slopeField{\pgfplotstableregressiona}
+\begin{tikzpicture}[scale=\scl]
+
+
+\begin{axis}[
+    log basis y={10},
+    tick align=outside,
+    tick pos=left,
+    x grid style={darkgray176},
+    xlabel={$N$},
+    xmin=1.6, xmax=10.4,
+    xtick style={color=black},
+    y grid style={darkgray176},
+    ylabel={Error computed},
+    ymode=log,
+    ytick style={color=black},
+    legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=lightgray204, nodes={scale=0.8, transform shape}}
+]
+\addplot [name path=Mmax, semithick, steelblue31119180, mark=none, mark size=3, mark options={solid}, forget plot] table[y=outputMax] {\errors};
+\addplot [name path=Mmin, semithick, steelblue31119180, mark=none, mark size=3, mark options={solid}, forget plot] table[y=outputMin] {\errors};
+\addplot [name path=Mmean, semithick, steelblue31119180, mark=*, mark size=3, mark options={solid}, dashed, forget plot] table[y=outputMean] {\errors};
+\addplot [color=steelblue31119180, fill=steelblue31119180, opacity=0.2] fill between [of=Mmax and Mmin];
+\addlegendentry{$|T^\fem_O(\mu) - T^{\rbm, N}_O(\mu)|$}
+\addplot+[colorB, draw=none, mark=none, forget plot] table[x=N, y={create col/linear regression={y=outputMean}}]{\errors};
+\xdef\slopeO{\pgfplotstableregressiona}
+
+\addplot [name path=MFmax, semithick, forestgreen4416044, mark=none, mark size=3, mark options={solid}, forget plot] table[y=fieldMax] {\errors};
+\addplot [name path=MFmin, semithick, forestgreen4416044, mark=none, mark size=3, mark options={solid}, forget plot] table[y=fieldMin] {\errors};
+\addplot [name path=MFmean, semithick, forestgreen4416044, mark=*, mark size=3, mark options={solid}, dashed, forget plot] table[y=fieldMean] {\errors};
+\addplot [color=forestgreen4416044, fill=forestgreen4416044, opacity=0.2] fill between [of=MFmax and MFmin];
+\addlegendentry{$\norm{T^\fem(\mu) - T^{\rbm, N}(\mu)}{\mu}$}
+\addplot+[colorB, draw=none, mark=none, forget plot] table[x=N, y={create col/linear regression={y=fieldMean}}]{\errors};
+\xdef\slopeField{\pgfplotstableregressiona}
+
+
+\logLogSlopeTriangle{0.15}{0.1}{0.2}{\slopeO}{steelblue31119180}
+\logLogSlopeTriangle{0.15}{0.1}{0.1}{\slopeField}{forestgreen4416044}
+
+
+
+\end{axis}
+
+\end{tikzpicture}

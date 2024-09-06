@@ -1,0 +1,30 @@
+% This file was created with tikzplotlib v0.10.1.
+\begin{tikzpicture}[scale=\scl]
+
+    \definecolor{darkgray176}{RGB}{176,176,176}
+    \definecolor{lightgray204}{RGB}{204,204,204}
+
+    \begin{axis}[
+        legend cell align={left},
+        legend style={fill opacity=1, draw opacity=1, text opacity=1, draw=lightgray204},
+        tick align=outside,
+        tick pos=left,
+        ymode=log,
+        xmajorgrids, ymajorgrids,
+        x grid style={darkgray176},
+        xlabel={Number of parallel processes \texttt{np}},
+        % xmode=log,
+        xtick style={color=black},
+        y grid style={darkgray176},
+        ylabel={Time to solve the problem [s]},
+        ytick style={color=black}
+    ]
+    \addplot [semithick, colorA, mark=*, mark size=2, mark options={solid}]
+        table [x=np, y=P1] {fig/eye/results/convergence/scalability.dat};
+    \addlegendentry{$\P_1$}
+    \addplot [semithick, colorB, mark=*, mark size=2, mark options={solid}]
+        table [x=np, y=P2] {fig/eye/results/convergence/scalability.dat};
+    \addlegendentry{$\P_2$}
+    \end{axis}
+
+\end{tikzpicture}

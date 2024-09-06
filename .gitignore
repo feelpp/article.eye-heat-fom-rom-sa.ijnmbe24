@@ -15,3 +15,5 @@ article.template.pdf
 *.idx
 *.ilg
 *.ind
+*.run.xml
+*.bcf

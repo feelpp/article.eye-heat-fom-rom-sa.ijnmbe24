@@ -1,0 +1,21 @@
+Author;Temperature;max;uncertainty;Mean;Technique
+Dohnberg, 1876;36.5;36.7;;36.6;Mercury bulb
+Galezowski, 1877;36.4;;;36.4;Mercury bulb
+Silex, 1893;35.55;;;35.55;Thermo-element
+Gilese, 1894;35.72;;;35.72;Thermo-element
+Hertel, 1900;35.65;;;35.65;Mercury bulb
+Kirisawa, 1942;34.5;;;34.5;Thermo-element
+Kirisawa, 1942;36.34;;;36.34;Thermo-element
+Holmberg, 1952;36.24;;;36.24;Thermo-electric
+Hamano et al., 1964;34;;;34;Thermister
+Hill and Leighton, 1965;32.1;;0.9;32.1;Thermister
+Mapstone, 1968;34.8;;0.3;34.8;Infrared
+Kolstrad, 1970;32;;;32;Thermister
+Kinn and Tell, 1973;;;;35.5;Liquid crystal
+Rysä and Sarvaranta, 1974;34.8;;0.5;34.8;Infrared
+Hørven, 1975;33.67;;;33.67;Contact probe
+Hamano et al., 1976;34.4;;;34.4;Infrared
+Fatt and Chaston, 1980;;;;34.5;Infrared
+Aliò and Padron, 1981;32.9;;0.62;32.9;Infrared
+Fielder, Winder, Sheridaidah et al.;;;;33.4;Infrared
+Martin and Fatt, 1986;34.5;;1.0;34.5;Heat ﬂow

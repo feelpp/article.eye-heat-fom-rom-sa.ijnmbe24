@@ -1,0 +1,80 @@
+%!TeX root=../article.heat-fom-rom-sa.ijnmbe24.tex
+\subsection{Continuous and discrete model}
+\label{sec:variational-formaultion}
+
+We first compute the variational formulation of the linearized model $\Em_\text{L}(\mu)$ described in \Cref{sec:model-phys}.
+
+Let $v\in H^1(\Omega)$ be a test function.
+As the union $\Omega=\bigsqcup_i \Omega_i$ is disjoint, we have:
+
+\begin{equation}
+    \int_\Omega -\nabla\cdot(k\nabla T)v\d x = \sum_i\int_{\Omega_i}-\nabla\cdot(k_i\nabla T)v\d x
+\end{equation}
+
+Hence, using Green's theorem:
+\begin{subequations}
+\begin{equation}
+    \sum_i\int_{\Omega_i}-\nabla\cdot(k_i\nabla T)v\d x = 0 \Leftrightarrow \sum_i\int_{\Omega_i}k_i\nabla T\cdot \nabla v\d x - \int_{\partial\Omega_i} k_i\dfrac{\partial T}{\partial\n_i}v\d \sigma = 0
+\end{equation}
+with boundary and interface conditions \Cref{eq:model:robin,,eq:neumann-lin,,eq:model:interface}, we obtain
+
+
+\begin{align}
+    \nonumber &\sum_i k_i\int_{\Omega_i}\nabla T\cdot\nabla v \d x+ \int_{\Gamma_\text{amb}}\left[h_\text{amb}T + h_\text{r}T\right]v\d \sigma + \int_{\Gamma_\text{body}}h_\text{bl}Tv\d \sigma =\\
+        &\qquad\qquad\int_{\Gamma_\text{amb}}\left[h_\text{amb}T_\text{amb} + h_\text{r}T_\text{amb} - E\right]v\d \sigma + \int_{\Gamma_\text{body}}h_\text{bl}T_\text{bl}v\d \sigma
+\end{align}
+\label{eq:variational-formulation-comp}
+\end{subequations}
+
+The previous equation is equivalent to:
+
+\begin{subequations}
+
+\begin{equation}
+    a_L(T,v; \mu) = f_L(v; \mu)
+\end{equation}
+with:
+\begin{align}
+    \nonumber
+    a_L(T, v; \mu) &:= \prm{k_\text{lens}}\int_{\Omega_\text{lens}}\nabla T\cdot \nabla v\d x + \sum_{i\neq\text{lens}}k_i\int_{\Omega_i}\nabla T\cdot\nabla v\d x \\
+        &\hspace{4cm}+ \int_{\Gamma_\text{amb}}\left[\prm{h_\text{amb}}T + h_\text{r}T\right]v\d \sigma + \int_{\Gamma_\text{body}}\prm{h_\text{bl}}Tv\d \sigma\\
+    f_L(v; \mu) &:= \int_{\Gamma_\text{amb}}\left[\prm{h_\text{amb}}\prm{T_\text{amb}} + h_\text{r}\prm{T_\text{amb}} - \prm{E}\right]v\d \sigma + \int_{\Gamma_\text{body}}\prm{h_\text{bl}}\prm{T_\text{bl}}v\d \sigma
+\end{align}
+\label{eq:variational-form}
+\end{subequations}
+
+
+The problem statement is therefore: for $\mu\in\Dmu$ given, find the output of interest $s(\mu)\in\R$ given by
+
+\begin{equation}
+    s(\mu) = \ell(T(\mu)),
+\end{equation}
+where $T(\mu)\in H^1(\Omega)$ is solution to
+\begin{equation}
+    \label{eq:variational-formulation}
+    a_L(T(\mu), v; \mu) = f_L(v; \mu)\quad \forall v\in H^1(\Omega).
+\end{equation}
+
+The functional $\ell$ returns the desired output of interest, which can be the mean temperature in a selected region
+\emph{e.g.\ }$\ell(T(\mu)) = \frac1{|\Omega_\text{cornea}|}\int_{\Omega_\text{cornea}}T(\mu)\d x$,
+or the temperature at a fixed point \emph{e.g.\ }$\ell(T(\mu)) = \left<\delta_O, T(\mu)\right>$.
+
+
+
+
+\begin{thm}
+    Let $\mu\in\Dmu$ fixed.
+    The problem (\ref{eq:variational-form}) is well-posed for $v\in H^1(\Omega)$:
+    there exists a unique $T(\mu)\in H^1(\Omega)$ such that $a_L(T(\mu), v; \mu) = f_L(v; \mu)$ for all $v\in H^1(\Omega)$.
+    If $T(\mu)\in \mathcal{C}^1(\bar{\Omega})\cap \mathcal{C}^2(\Omega)$, then $T(\mu)$ is solution to problem $\Em_\text{L}(\mu)$.
+\end{thm}
+
+\begin{proof}
+    The result is a straightforward application of the Lax-Milgram theorem \cite{Ern2021-mi}, and of the regularity of $T$.
+\end{proof}
+
+
+\begin{rem}
+    The well-posedness of the fully non-linear problem $\Em_\text{NL}(\mu)$ can also be obtained by the mean of a variational approach, in the spirit of \cite{Milka1993}.
+\end{rem}
+

@@ -1,0 +1,69 @@
+%! TeX root=../article.heat-fom-rom-sa.ijnmbe24.tex
+\subsection{Validation and comparison with previous studies}
+\label{sec:validation}
+
+We present in this section a thorough comparison between the results of this work and previously published data on the temperature of the eye,
+obtained either by experimental procedures or via computational modeling.
+Note that only scarce data are available for the entire human eyeball, since most of the measurement techniques estimated only the surface temperature of the cornea.
+In particular, \cite{Efron1989OcularST} gathers the outputs of 19 studies conducted with various instruments (mercury bulbs, liquid crystal thermometers or infrared thermometers),
+and the mean value reported, according to \cite{NG2006268}, is $T_O^\text{exp} = \qty{307.15}{\kelvin}$.
+The temperature at the center of the cornea computed with baseline value from our model is $T_O^\fem(\bar{\mu}) = \pgfmathprintnumber{306.0215598687341}~\unit{\kelvin}$,
+which lies in the interval of results found in the literature (see \cite[Table 1]{Efron1989OcularST} and \cite[Table 9]{NG2006268}).
+
+Additionally, in \cite{Efron1989OcularST}, the temperature is measured along an imaginary horizontal line, the \emph{Geometrical Center of the Cornea} (GCC), as described in \Cref{fig:geo-eye}, on a panel of 21 subjects.
+The experimental data are displayed in \Cref{fig:res-gcc}, together with the findings of the present work. %, among the curves obtained by \cite{li2010}.
+On the horizontal axis, the distance to the center of the eye is represented, and on the vertical axis is the temperature difference to the central one (mean value and standard deviation).
+Note that as the geometry of the simulated eye is not the same as the one used in the experiment, we scaled the results over the $x$-axis.
+The result shows that the high fidelity model is able to closely replicate the same behavior as the one experimentally measured,
+and the model $\Em_\text{L}(\bar{\mu})$ provides very close values (see \Cref{sec:linearized-model}).
+Moreover, thanks to the error bound introduced in \Cref{sec:rbm-error-estimates} for the RBM, the approach is considered to be valid for the sensitivity analysis procedure hereafter.
+
+
+\pgfplotstableread[col sep=comma]{fig/eye/results/GCC/gcc_efron.csv}\gccEfron
+\pgfplotstableread[col sep=comma]{fig/eye/results/GCC/gccFeelFullP2.csv}\gccfeel
+\pgfplotstableread[col sep=comma]{fig/eye/results/GCC/gcc_li_3D.csv}\gccli
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[trim axis left, trim axis right]
+        \begin{axis}
+        [legend style = { at = {(1.05,1)}, anchor=north west, nodes={scale=1, transform shape}},
+        xlabel = {Distance to center [\unit{\cm}]}, ylabel = {Difference of temperature [\unit{\kelvin}]}, grid = both,
+        xmin=-1.2e-2, xmax=1.2e-2, domain=-1e-2:1e-2,
+        scaled x ticks={real:1e-2}, xtick scale label code/.code={\,}
+        ]
+        \addplot+[colorB, mark=none, line width=1pt, opacity=0.4, forget plot] {10807.7*x*x + 0.999464*x};
+        \addplot+[colorB, only marks, mark=+, line width=1pt, mark size=4pt] table[col sep=comma,x=dx, y=mean_difference] {\gccEfron};
+        \addlegendentry{Measured values \cite{Efron1989OcularST}}
+        \addplot+[colorB!80, only marks, mark=+, line width=1pt, mark size=4pt, forget plot] plot [error bars/.cd, y dir=both, y explicit]
+            table[col sep=comma,x=dx, y=mean_difference, y error plus=std_up, y error minus=std_down] {\gccEfron};
+
+        \addplot+[colorFeel3, mark=none, line width=1pt, mark size=4pt] table[col sep=comma,x=dx_scaled, y=dT] {\gccfeel};
+        \addlegendentry{$\Em_\text{NL}^\N(\bar{\mu}) \equiv \Em_\text{L}^\N(\bar{\mu})$ model}
+
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Temperature on the GCC: experimental data (mean and standard deviation) vs. numerical results. In this analysis, we cannot distinguish graphical difference between the linear and non-linear models.}
+    \label{fig:res-gcc}
+
+\end{figure}
+
+
+
+
+
+In \Cref{fig:res:line}, we present a comparative analysis between the results of our current study and various numerical findings reported in existing literature.
+This comparison features temperatures calculated along a line traversing the eye’s center, the specific location of which is depicted in \Cref{fig:outputs}.
+This comparative approach is crucial as it verifies the accuracy of our computed values, encompassing not just the corneal surface but also the eye’s internal tissue structures.
+It is noteworthy that our analysis includes a mix of both 2D and 3D results, derived from both non-linear and linearized models.
+
+
+\begin{figure}
+    \centering
+    \input{fig/eye/results/line/line.tikz}
+    \caption{Temperature on a line going through the center of the eye (see \Cref{fig:outputs}), comparison with numerical results from literature.}
+    \label{fig:res:line}
+\end{figure}
+
+The results show a very good agreement between the findings of the present study and previously reported temperature results,
+along the different locations in the eyeball.
