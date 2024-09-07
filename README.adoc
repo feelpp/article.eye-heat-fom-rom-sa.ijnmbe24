@@ -73,3 +73,20 @@ title = {{Model order reduction and sensitivity analysis for complex heat transf
 year = {2024}
 }
 ----
+
+== How to reproduce the results
+
+The dataset is available in `data/`
+
+=== Results #1
+
+how to reproduce ...
+
+=== Results #2
+
+how to reproduce ...
+
+== Acknowledgements
+
+We would like to thank C. Trophime from LNCMI, V. Chabannes from Cemosis for their support and fruitful discussions.
+
