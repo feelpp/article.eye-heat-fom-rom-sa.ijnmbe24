@@ -23,7 +23,7 @@ email: marcela.szopos@u-paris.fr
 
 .Article DOI
 --
-image:https://img.shields.io/badge/DOI-Model%20order%20reduction%20and%20sensitivity%20analysis%20for%20complex%20heat%20transfer%20simulations%20inside%20the%20human%20eyeball-blue?link=https%3A%2F%2Fdoi.org%2F10.1002%2Fcnm.3864[DOI]
+image:https://img.shields.io/badge/10.1002/cnm.3864-Model%20order%20reduction%20and%20sensitivity%20analysis%20for%20complex%20heat%20transfer%20simulations%20inside%20the%20human%20eyeball-blue[DOI,link=https://doi.org/10.1002/cnm.3864]
 --
 
 .Repository and Dataset Zenodo DOI 
