@@ -6,18 +6,18 @@ Thomas Saigre, Christophe Prud'homme, Marcela Szopos
 
 [.author]
 Thomas Saigre::
-Cemosis, Institut de Recherche Mathématique Avancée, UMR 7501 Université de Strasbourg - CNRS
+Cemosis, Institut de Recherche Mathématique Avancée, UMR 7501 Université de Strasbourg - CNRS. +
 email: thomas.saigre@math.unistra.fr
 
 
 [.author]
 Christophe Prud'homme::
-Cemosis, Institut de Recherche Mathématique Avancée, UMR 7501 Université de Strasbourg - CNRS
+Cemosis, Institut de Recherche Mathématique Avancée, UMR 7501 Université de Strasbourg - CNRS. +
 email: christophe.prudhomme@cemosis.fr
 
 [.author]
 Marcela Szopos::
-Université Paris Cité, CNRS, MAP5, F-75006 Paris, France
+Université Paris Cité, CNRS, MAP5, F-75006 Paris, France. +
 email: marcela.szopos@u-paris.fr
 
 
