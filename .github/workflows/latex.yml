@@ -96,6 +96,8 @@ jobs:
             ./*.gin
             ./*.bbl
             ./${{ needs.workflow-setup.outputs.pdf }}
+            tex/*
+            fig/*
             ./README.adoc
             ./img*
             ./dat*
