@@ -1,0 +1,13 @@
+{
+    "Meshes":
+    {
+        "heat":
+        {
+            "Import":
+            {
+                "filename":"$cfgdir/mesh/M/M3/Eye_Mesh3D_p$np.json",
+                "partition":0
+            }
+        }
+    }
+}

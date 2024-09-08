@@ -26,7 +26,7 @@ email: marcela.szopos@u-paris.fr
 image:https://img.shields.io/badge/10.1002/cnm.3864-Model%20order%20reduction%20and%20sensitivity%20analysis%20for%20complex%20heat%20transfer%20simulations%20inside%20the%20human%20eyeball-blue[DOI,link=https://doi.org/10.1002/cnm.3864]
 --
 
-.Repository and Dataset Zenodo DOI 
+.Repository and Dataset Zenodo DOI
 --
 
 --
@@ -76,15 +76,39 @@ year = {2024}
 
 == How to reproduce the results
 
-The dataset is available in `data/`
+The dataset is available in `data/`.
 
-=== Results #1
+The meshes construction are available in https://github.com/feelpp/mesh.eye. **TODO: update citation**
+Insert the meshes in the directory `data/mesh`.
 
-how to reproduce ...
+=== Run the high fidelity model
+
+The high fidelity model is run using the Feel++ heat tooblox <<fpp24>>:
+
+[source, bash]
+----
+[mpirun -np 12] feelpp_toolbox_heat --config-file eye.cfg
+----
+
+The previous command line runs the linearized model $\mathcal{E}_\text{L}(\mu)$. To run the nonlinear model $\mathcal{E}_\text{NL}(\mu)$, use the configuration file `eye-full.cfg`.
+
+To change the parameters of the model, update the content of the section `Parameters` in the file link:data/eye.json[`eye.json`].
+
+To use another mesh, update the content of the section `Meshes/heat/Import` in the file link:data/mesh3d.json[`mesh3d.json`].
+
+NOTE: When running in parallel, make sure that the mesh is partitioned correctly. In the JSON file, the macro `$np` will be replaced by the number of MPI processes.
+
 
 === Results #2
 
 how to reproduce ...
+
+
+== References
+
+* [[fpp24]] "Heat Transfer Toolbox Application Manual." Feel++ Documentation, 2024, https://docs.feelpp.org/toolboxes/latest/heat/index.html.
+* [[[pp]]] Andy Hunt & Dave Thomas. The Pragmatic Programmer:
+From Journeyman to Master. Addison-Wesley. 1999.
 
 == Acknowledgements
 

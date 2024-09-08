@@ -1,0 +1,37 @@
+{
+    "BoundaryConditions":
+    {
+        "heat":
+        {
+            "convective_heat_flux":
+            {
+                "BC_Sclera":
+                {
+                    "h":"h_bl:h_bl",
+                    "Text":"T_bl:T_bl"
+                },
+                "BC_OpticNerve":
+                {
+                    "h":"h_bl:h_bl",
+                    "Text":"T_bl:T_bl"
+                },
+                "BC_Cornea":
+                {
+                    "h": "h_amb+h_tau:h_amb:h_tau",
+                    "Text": "T_amb:T_amb"
+                    // "expr":"-(h_amb * (heat_T - T_amb) + sigma * epsilon * (heat_T * heat_T * heat_T * heat_T - T_amb * T_amb * T_amb * T_amb) + E):heat_T:T_amb:h_amb:epsilon:sigma:E"
+                }
+            },
+            "flux":
+            {
+                "BC_Cornea":
+                {
+                    "expr":"-E:E"
+                    //"expr": "-( (h_amb+h_tau)*(heat_T-T_amb) + E ):h_amb:h_tau:heat_T:T_amb:E"
+                    // "expr":"-(h_amb * (heat_T - T_amb) + sigma * epsilon * (heat_T * heat_T * heat_T * heat_T - T_amb * T_amb * T_amb * T_amb) + E):heat_T:T_amb:h_amb:epsilon:sigma:E"
+
+                }
+            }
+        }
+    }
+}

@@ -19,3 +19,10 @@ article.template.pdf
 *.bcf
 article.eye-heat-fom-rom-sa.ijnmbe24.pdf
 article.heat-fom-rom-sa.ijnmbe24.pdf
+
+# slurm logs
+*_out.log
+*_err.log
+
+data/mesh/M
+data/mesh/Mr
