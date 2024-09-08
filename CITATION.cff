@@ -14,7 +14,7 @@ title: "Model order reduction and sensitivity analysis for complex heat transfer
 version: 1.0.0
 identifiers:
   - type: doi
-    value: 
+    value:
 date-released: 2024-09-06
 url: "https://github.com/feelpp/article.eye-heat-fom-rom-sa.ijnmbe24"
 preferred-citation:
@@ -30,7 +30,7 @@ preferred-citation:
     given-names: "Marcela"
     orcid:  https://orcid.org/0000-0002-7300-3267
   doi: 10.1002/cnm.3864
-  journal: "International Journal for Numerical Methods in Biomedical Engineering"  
+  journal: "International Journal for Numerical Methods in Biomedical Engineering"
   title: "Model order reduction and sensitivity analysis for complex heat transfer simulations inside the human eyeball"
   year: 2024
   month: 9

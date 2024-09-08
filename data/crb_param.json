@@ -17,15 +17,15 @@
         },
         "T_bl":    // [K]         \cite{https://hypertextbook.com/facts/1997/LenaWong.shtml}
         {
-            "min":"308.3",
-            "max":"312",
+            "min":"308.15",
+            "max":"312.15",
             "description":"Blood tempetature [K]",
             "source": "pm 5% of 310.15K = 37°C"
         },
         "T_amb":    // [K]         \cite{MAPSTONE1968237}
         {
-            "min":"283.15",
-            "max":"303.15",
+            "min":"273.15",
+            "max":"308.15",
             "description":"Ambiant temperature [K]",
             "source": "de 10°C à 30°C"
         },

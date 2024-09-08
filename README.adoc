@@ -99,16 +99,20 @@ To use another mesh, update the content of the section `Meshes/heat/Import` in t
 NOTE: When running in parallel, make sure that the mesh is partitioned correctly. In the JSON file, the macro `$np` will be replaced by the number of MPI processes.
 
 
-=== Results #2
+=== Run the deterministic sensitivity analysis
 
-how to reproduce ...
+To reproduce the results of the deterministic sensitivity analysis, presented in section 4.1 of the pulication, run
+
+[source, bash]
+----
+[mpirun -np 12] python3 run-SA.py
+----
 
 
 == References
 
 * [[fpp24]] "Heat Transfer Toolbox Application Manual." Feel++ Documentation, 2024, https://docs.feelpp.org/toolboxes/latest/heat/index.html.
-* [[[pp]]] Andy Hunt & Dave Thomas. The Pragmatic Programmer:
-From Journeyman to Master. Addison-Wesley. 1999.
+
 
 == Acknowledgements
 
