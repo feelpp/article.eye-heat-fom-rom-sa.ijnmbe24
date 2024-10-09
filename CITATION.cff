@@ -14,7 +14,7 @@ title: "Model order reduction and sensitivity analysis for complex heat transfer
 version: 1.0.0
 identifiers:
   - type: doi
-    value:
+    value: 10.5281/zenodo.13907890
 date-released: 2024-09-06
 url: "https://github.com/feelpp/article.eye-heat-fom-rom-sa.ijnmbe24"
 preferred-citation:
@@ -87,7 +87,7 @@ references:
     doi: 10.5281/zenodo.13886143
     license:
     - cc-by-4.0
-    
-    
-  
+
+
+
 
