@@ -34,3 +34,60 @@ preferred-citation:
   title: "Model order reduction and sensitivity analysis for complex heat transfer simulations inside the human eyeball"
   year: 2024
   month: 9
+references:
+  - type: software
+    authors:
+    - family-names: Chabannes
+      given-names: Vincent
+      orcid: 0009-0005-3602-3524
+    - family-names: Prud'homme
+      given-names: Christophe
+      orcid: 0000-0003-2287-2961
+    - family-names: Saigre
+      given-names: Thomas
+      orcid: 0009-0009-5763-4956
+    - family-names: Lorenzo
+      given-names: Sala
+      orcid: 0000-0002-8878-0616
+    - family-names: Szopos
+      given-names: Marcela
+      orcid: 0000-0002-7300-3267
+    - family-names: Trophime
+      given-names: Christophe
+      orcid: 0000-0002-3147-5821
+    date-released: '2024-09-23'
+    doi: 10.5281/zenodo.13829741
+    license:
+    - cc-by-4.0
+    repository-code: https://github.com/feelpp/mesh.eye/tree/v1.0.0-preview.2
+    title: A 3D geometrical model and meshing procedures for the human eyeball
+    version: v1.0.0-preview.2
+  - type: dataset
+    title: Mesh and configuration files to perform coupled heat+fluid simulations on a
+      realistic human eyeball geometry with Feel++
+    date-released: '2024-10-03'
+    authors:
+    - affiliation: "Cemosis, IRMA UMR 7501, Universit\xE9 de Strasbourg, CNRS, France"
+      family-names: Saigre
+      given-names: Thomas
+      orcid: 0009-0009-5763-4956
+    - affiliation: "Cemosis, IRMA UMR 7501, Universit\xE9 de Strasbourg, CNRS, France"
+      family-names: Prud'homme
+      given-names: Christophe
+      orcid: 0000-0003-2287-2961
+    - affiliation: "Universit\xE9 Paris Cit\xE9, CNRS, MAP5, F-75006 Paris, France"
+      family-names: Szopos
+      given-names: Marcela
+      orcid: 0000-0002-7300-3267
+    - affiliation: "Cemosis, IRMA UMR 7501, Universit\xE9 de Strasbourg, CNRS, France"
+      family-names: Chabannes
+      given-names: Vincent
+      orcid: 0009-0005-3602-3524
+    cff-version: 1.2.0
+    doi: 10.5281/zenodo.13886143
+    license:
+    - cc-by-4.0
+    
+    
+  
+
